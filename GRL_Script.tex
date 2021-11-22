@@ -29,6 +29,11 @@ Rheinische Friedrich-Wilhelms-Universität Bonn}
 % Lec 1: Slide 36/54 - EXAMPLE of many switches between using 'node' and 'vertex'. Both were introduced as reasonable, but maybe consistency is more scientific. 
 % Lec 1: Slide 43/54: In both cases it says "number of edges incident to v". I guess '(incident) edges starting/ending at v' is more suitable?
 % Lec 1: Slide 47/54: Equaltiy should be an upper bound. Counter example: Graph consisting of one edge.
+% Lec 2: Slide 41/59: The outer round bracket of the Landau notation is not closed. Also l\in L is introduced one slide after its usage.
+% Lec 2: Slide 48/59: Missing the definition of the component as $X$:	"A $k$\textbf{-core component} $X$ of a graph $G$"
+% Lec 3: Slide 59/59: First item: bracket is never closed.
+% Lec 3: Slide 34/50: First item: a -> an identifier
+% Lec 4: Slide 9/36: "in iteration $k$ of THE GNN" (?)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Lecture 00 - 11.10.2021 %%%%
@@ -225,7 +230,7 @@ Note that whenever information about individual vertices is available, one shoul
 
 To conclude, to evaluate a graph representation one should measure its performance against a model which ignores the graph structure. Thus when dealing with an attributed graph $G$ it can be beneficial to start with its vertex attributes $f_V: V(G)\to\mathcal{X}$ and first consider a hypothesis class over $\mathcal{X}$, only. Only after that, one may think about including graph representations into the hypothesis class.
 
-\subsection{Local Feature Counts}
+\section{Local Feature Counts}
 
 In this subsection we will define various simple vertex representations $f:V(G)\to\IR$ for fixed graphs. Let $\mathcal{R}^\prime$ be the set of all one-dimensional vertex representations. These representations can be grouped in the following way:
 \begin{equation}
@@ -368,35 +373,595 @@ We would like to count, for each vertex $v$, the number of graphlets of a certai
 		\State $\text{gc}(v)=0$ for all $v\in V(G)$
 		\For {\textbf{all} $X\subseteq V(G)$ with $|X|=k$}
 			\If{$G[X]$ is isomorphic to $H$}
-				\State Increment $\text{gc}(x)$ for all $x\in X$
+				\State $\text{gc}(x) = \text{gc}(x)+1$ for all $x\in X$
 			\EndIf
 		\EndFor
 	\end{algorithmic}
-	\textbf{Runntime}: There are ${n\choose k}$ choices for $X$, and there need $\gamma(k)\in \mathcal{O}( k! \ k^2)$ graphs to be checked for isomorphism. Thus the total runtime for a constant $k$ is
+	\textbf{Runtime}: There are ${n\choose k}$ choices for $X$, and there need $\gamma(k)\in \mathcal{O}( k! \ k^2)$ graphs to be checked for isomorphism. Thus the total runtime for a constant $k$ is
 	\[ \mathcal{O} \big( n^k \ \gamma(k) \big) = \mathcal{O}(n^k)\]	
 \end{algorithm}
 
 Since a lot of graph structured data can be considered Big Data (w.r.t. size; not speed), cubic runtime in the number of vertices is not acceptable.
 
-\begin{Theorem}[Runtime bound on the Incident Induced Graphlets Count Problem]{thm:RuntimeBoundIncIndGraphletsCountPb}
-	Let $G$ be a bounded degree graph and let $d$ denote the maximum degree in $G$. Then all $v$-incident graphlets of $G$ with size $k\in \{ 3, 4, 5 \}$ can be enumerated in $\mathcal{O}(nd^{k-1})$ time.
-\end{Theorem}
-Notice that the maximum degree $d$ of a graph is typically much smaller than the number of its vertices $n$.
-\begin{Proof}
-	Graphlets of size $k$ can be divided into two classes:\begin{itemize}
-		\item Graphlets that contain a simple path of length $k-1$ and
-		\item Graphlets that to not contain such a path.
-	\end{itemize}
-	%TODO: CONTINUE - Slide 14/59 ...
-\end{Proof}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Lecture 02 - 25.10.2021 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{Theorem}[Runtime bound on the Incident Induced Graphlets Count Problem]{thm:RuntimeBoundIncIndGraphletsCountPb}
+	Let $G$ be a bounded degree graph and let $d$ denote the maximum degree in $G$. 
+	
+	If all graphlet structures size $k\in \{ 3, 4, 5 \}$ are known (precomputed), then all $v$-incident graphlets of $G$ with size $k\in \{ 3, 4, 5 \}$ can be enumerated in $\mathcal{O}(nd^{k-1})$ time.
+\end{Theorem}
+Notice that the maximum degree $d$ of a graph is typically much smaller than the number of its vertices $n$.
+\begin{Proof}
+	Graphlets of size $k$ can be divided into two classes:\begin{enumerate}
+		\item Graphlets that contain a simple path of length $k-1$ and
+		\item Graphlets that to not contain such a path.
+	\end{enumerate}
+	First, lets consider graphlets with paths of length $k-1$ and one fixed vertex $v\in V(G)$. We can enumerate all such paths in $G$ starting from $v$ by a depth-first search in $\mathcal{O}(d^{k-1})$.
+	
+	Each such path $P$ induces a subgraph $G[V(P)]$ containing $v$, which we can construct in $\mathcal{O}(k^2)$ time using appropriate data structures. 
+	
+	We can find the graphlet that $G[V(P)]$ is isomorphic to in $\gamma(k)\in\mathcal{O}(k!\ k^2)$ time and increase its count for $v$:\begin{itemize}
+		\item Consider all $k!$ permutations of the vertex set of $G[V(P)]$ and
+		\item check if the resulting adjacency matrix is identical to one of our precomputed graphlets ($\mathcal{O}(k^2)$, there are less than 30 of them).
+	\end{itemize}
+	Notice, that this approach has a couple of drawbacks:\begin{enumerate}
+		\item If a graphlet may contain more than one path of length $k-1$, it will be counted/found multiple times!
+		\item If $v$ is only in the middle of a path of length $k-1$ including graphlet, not graphlets that contain $v$ are found!
+	\end{enumerate}
+	There exist a solution for these drawbacks: Let $G[X]$ be a graphlet and $|X|=k$. Each $k-1$ path inducing $G[X]$ will be found exactly twice, one starting from each endpoint $v\neq v^\prime$. Thus we will find $G[X]$ twice for each $k-1$ path in it. Thus increasing a counter for each $w\in X$ each time we find $G[X]$ will yield a final count of 
+		\[ 2\#(k-1 \text{ paths in }G[X]) \]
+\end{Proof}
+
+	%TODO: CONTINUE - Slide 16/59 ...
+
+\begin{algorithm}[H]
+	\caption{Exact Graphlet Counting Algorithm} \label{alg:ExactGraphletCountingAlg} 
+	\begin{tabbing}
+		\textbf{Output:} \= \kill
+		\textbf{Input:} \>a graph $G$ and\\ 
+		\>a graphlet $H$ of size $k$ and $1\le p$ paths of length $k-1$.\\
+		\textbf{Output:} \>the number of $v$-incident subgraphs  isomorphic to $H$ for all $v\in V(G)$.
+	\end{tabbing}	
+	\begin{algorithmic}[1]		
+		\State $\text{gc}(v)=0$ for all $v\in V(G)$
+		\For {\textbf{all} $v \in V(G)$}
+			\For {\textbf{all} $k-1$ length paths $P$ in $G$ starting in $v$}
+				\If{$G[V(P)]$ is isomorphic to $H$}
+					\State $\text{gc}(x) = \text{gc}(x)+1$ for all $x\in X$
+				\EndIf
+			\EndFor
+		\EndFor
+		\For {\textbf{all} $v\in V(G)$}
+			$\text{gc}(v) = \frac{\text{gc}(v)}{2p}$ \Comment{B.c. of double counting}
+		\EndFor
+	\end{algorithmic} 
+\end{algorithm}
+
+To understand the runtime complexity, we need to consider how many graphlets without paths of length $k-1$ here are.\begin{itemize}
+	\item[For $k=2$] There are no such graphlets.
+	\item[For $k=3$] There are no such graphlets.
+	\item[For $k=4$] There is only the $3$-star.\\
+	We need to lookup all $\mathcal{O}\big({d\choose 3}\big)$ neighbor triplets of $v$ and check if they induce the $3$-star graphlet. This can be done in $\mathcal{O}(d^3 \gamma(4))$.
+	\item[Fpr $k=5$] All connected graphlets with no $4$-paths have the $3$-star as subgraph.\\
+	Thus enumerate all occurrences of the $3$-star and check the neighbors of each node (in the star) to see if they induce one of the graphlets. This takes $\mathcal{O}(d\gamma(5))$ per induced graph.
+\end{itemize}
+Thus the overall runtime is $\mathcal{O}(d^4\gamma(5))$.
+
+Now, considering the relevance of the $3$-star we notice that since it has only one center, they cannot be found twice. Thus one may think, that the normalization step of the counter can be avoided.
+
+However, the counts for graphlets of size five need to be normalized by the number of subgraphs of the pattern that are isomorphic to the $3$-star. Lets use this knowledge in another version of the algorithm.
+
+\begin{algorithm}[H]
+	\caption{Exact Graphlet Counting Algorithm 2} \label{alg:ExactGraphletCountingAlg2} 
+	\begin{tabbing}
+		\textbf{Output:} \= \kill
+		\textbf{Input:} \>a graph $G$ and\\ 
+		\>the $3$-star $H$.\\
+		\textbf{Output:} \>the number of $v$-incident subgraphs  isomorphic to $H$ for all $v\in V(G)$.
+	\end{tabbing}	
+	\begin{algorithmic}[1]		
+		\State $\text{gc}(v)=0$ for all $v\in V(G)$
+		\For {\textbf{all} $v \in V(G)$}
+			\For {\textbf{all} $X\subseteq N(v)$ with $|X|=3$}
+				\If{$G[X\cup\{v\}]$ is isomorphic to $H$}
+					\State $\text{gc}(x) = \text{gc}(x)+1$ for all $x\in X\cup\{v\}$
+				\EndIf
+			\EndFor
+		\EndFor
+	\end{algorithmic}
+	\textbf{Runtime:} For pattern $H$ with $|V(H)|=k$ the runtime is $\mathcal{O}(nd^{k-1})$\\
+	Repeating this for the set $\mathcal{G}_{3,4,5}$ for all 29 pairwise non-isomorphic graphs of size $k=3, 4, 5$ is also in $\mathcal{O}(nd^{k-1})$.\\
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{Exact Graphlet Counting Algorithm 3} \label{alg:ExactGraphletCountingAlg3} 
+	\begin{tabbing}
+		\textbf{Output:} \= \kill
+		\textbf{Input:} \>a graph $G$ and\\ 
+		\>the $3$-star $H$ of size $5$ without simple $k-1$ length paths and $1\le x$ $3$-stars.\\
+		\textbf{Output:} \>the number of $v$-incident subgraphs  isomorphic to $H$ for all $v\in V(G)$.
+	\end{tabbing}	
+	\begin{algorithmic}[1]		
+		\State $\text{gc}(v)=0$ for all $v\in V(G)$
+		\For {\textbf{all} $v \in V(G)$}
+			\For {\textbf{all} $X\subseteq N(v)$ with $|X|=3$}
+				\If{$G[X\cup\{v\}]$ is isomorphic to $H$}
+					\For{$w\in \bigcup_{x\in X\cup\{v\}}N(x)$} 
+						\If {$H$ is isomorphic to $G[X\cup\{v,w\}]$}
+							\State $\text{gc}(x) = \text{gc}(x)+1$ for all $x\in X\cup\{v,w\}$
+						\EndIf
+					\EndFor
+				\EndIf
+			\EndFor
+		\EndFor
+		\For {\textbf{all} $v\in V(G)$}
+			$\text{gc}(v) = \frac{\text{gc}(v)}{2p}$ \Comment{B.c. of double counting}
+		\EndFor
+	\end{algorithmic}
+	\textbf{Runtime:} For pattern $H$ with $|V(H)|=k$ the runtime is $\mathcal{O}(nd^{k-1})$\\
+	Repeating this for the set $\mathcal{G}_{3,4,5}$ for all 29 pairwise non-isomorphic graphs of size $k=3, 4, 5$ is also in $\mathcal{O}(nd^{k-1})$.\\
+\end{algorithm}
+
+(Note that in practice the order of the loops should be changed.)
+
+With these algorithms at hand, we can proclaim that for all $H\in\mathcal{G}_{3,4,5}$ we can efficiently compute
+\[ r_H(v) \ := \ |\{ X\subseteq V| \ v\in X\land G[X] \text{ is isomorphic to }H \}| \]
+and hence we can efficiently compute the representation of graphs by $2, 3, 4, 5$-graphlets:
+\begin{equation}\label{eq:GraphletGraphRepresentation}
+	\times_{\{r_H|\ H\in\mathcal{G}_{2,3,4,5}\}}: V(G) \to \IR^{29}
+\end{equation}
 
 
-\chapter{Announced Topics}
+
+One may ask, how significant the runtime improvement from $\mathcal{O}(n^k)$ in Algorithm \ref{alg:BruteForceCountingIncidentGraphlets} to $\mathcal{O}(nd^{k-1})$ in Algorithm \ref{alg:ExactGraphletCountingAlg3} really is. As it turns out this improvement is the change between an impractical and a practical algorithm since in the latter only connected subgraphs considered, which is as desired. Im most real world graphs, there are much less such connected sets than there are subsets.
+
+One may also ask, how significant these results are, given that we only considered small graphlets. As it turns out, in many databases these small graphlets can be interpreted more easily than bigger ones. For example in social networks, many triangle graphlets may indicate that friends of friends tend to be friends as well. While many 2-paths imply the opposite. Nevertheless, larger graphlets can be useful in practice too.
+
+Keep in mind, that so far we considered unlabeled graphs. Taking labels into account yields much more pairwise non-isomorphic graphs. Note that in practice, graphlet counting (and multiple other pattern based representation methods) tends to \textit{work better with discretely labeled attributes} than with continuous attributes (e.g. $f_V:V(G)\to\IR$). Thus it may be desirable to discretize given continuous labels.
+
+\section{Distance based node representations}
+
+We have seen that graphlet counting (as an example of local feature counting) extends the trivial neighborhood set representation to the immediate neighborhood. But it to does not go beyond a few neighbors.
+
+\subsection{Centrality measures with distances}
+
+\begin{Definition}[Geodesic graph distance]{def:GeodesicGraphDistance}
+	Let $G$ be a graph and $v, w\in V(G)$. Then the (\textbf{geodesic}) \textbf{distance} $d(v,w)$ is the length of the \textbf{shortest path} in $G$ with $v$ and $w$ as its endpoints.
+	
+	
+	More explicitly, the \textbf{unweighted} (\textbf{geodesic}) \textbf{distance} is the number of edges in the path. On the other hand the \textbf{weighted} (\textbf{geodesic}) \textbf{distance} for some weight function $c:E(G)\to\IR_{\ge 0}$ is the sum of weights of edges in this path.
+	
+	If such a path between $v$ and $w$ does not exist, set $d(v,w) := \infty$.
+\end{Definition}
+
+A trivial but expensive approach to represent the graph structure is to compute and store all distances to all other vertices in the graph. This has time complexity \begin{itemize}
+	\item $\mathcal{O}(nm)$ using BFS for \textit{unweighted} graphs and
+	\item $\mathcal{O}(n^2 \log(n)+nm)$ using Johnsons algorithm for \textit{weighted} graphs
+\end{itemize}
+and space complexity $\Theta(n^2)$. For many (big) real world graphs this is infeasible.
+
+\begin{Definition}[(Vertex) closeness centrality]{def:VertexClosenessCentrality}
+	Let $G$ be a connected graph and $v\in V(G)$. The \textbf{closeness centrality} of $v$ is defined as
+	\begin{equation}
+		C_{\text{c}}(v) := \begin{cases}
+			\infty & \text{if $G$ is disconnected}\\
+			0 & \text{if $G$ has only one vertex}\\
+			\frac{n-1}{\sum_{w\in V(G)\backslash\{v\}} d(v,w) } & \text{else}
+		\end{cases}
+	\end{equation}
+	That is the ratio of the distance of all vertices to $v$, if $v$ would be connected to every vertex - and the actual accumulated distances to all vertices.
+\end{Definition}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{images/closenessCentrality}
+	\caption{}
+	\label{fig:closenesscentrality} %TODO: TeX
+\end{figure}
+
+
+Note that this closeness centrality is a well-known centrality measure. A scaled version of it is used for example in the k-means cluster reassignment step. There one is optimizing with respect to the accumulated pairwise Euclidean distance:
+\[ \amin{x\in \IR^2}\sum_{y\in C_i} L_2^2(x,y) \ = \amax{x\in \IR^2} \frac{1}{ \sum_{y\in C_i} L_2^2(x,y) } \ = \amax{x\in \IR^2} \frac{n-1}{ \sum_{y\in C_i} L_2^2(x,y) }\]
+
+\begin{Definition}[Harmonic closeness centrality]{def:HarmonicClosenessCentrality}
+	Let $G$ be a graph and $v\in V(G)$. The \textbf{harmonic closeness centrality} of $v$ is
+	\begin{equation}
+		C_{\text{hc}}(v) := \frac{1}{n-1} \sum_{w\in V(G)\backslash\{v\}} \frac{1}{d(v,w)}
+	\end{equation}
+	while defining $\frac{n-1}{\infty} := 0$.\\
+	
+	Thus $C_{\text{hc}}$ is well defined on disconnected graphs and again zero if there is only one vertex in $G$.
+\end{Definition}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{images/harmonicClosenessCentrality}
+	\caption{}
+	\label{fig:harmonicclosenesscentrality} %TODO: TeX
+\end{figure}
+
+Unfortunately, no algorithm is known to compute the closeness centrality for all vertices faster than by trivially computing all-pairs-shortest paths. This is possible in $\mathcal{O}(n^2 \log(n)+nm)$ in the weighted case.
+
+\begin{Definition}[Sampled harmonic closeness centrality]{def:SampledHarmonicClosenessCentrality}
+	Let $G$ be a graph, $v\in V(G)$ and $L\subseteq V(G)$. The \textbf{sampled harmonic closeness centrality} of $v$ with respect to $L$ is
+	\begin{equation}
+	C_{\text{hc},L}(v) := \frac{1}{|L\backslash\{v\}|} \sum_{w\in L\backslash\{v\}} \frac{1}{d(v,w)}
+	\end{equation}
+	while defining $\frac{|L|}{\infty} := 0$.\\
+	
+	This is the harmonic closeness centrality, limited to a subset $L$ of vertices of the graph.
+\end{Definition}
+
+The sampled harmonic closeness centrality for all vertices an be computed in $\mathcal{O}\big(|L|(m+n\log(n))\big)$ by running Dijkstras algorithm starting from each vertex $l\in L$, which we call \textbf{landmarks}. This approach can be implemented to have $\mathcal{O}(n)$ space complexity (in addition to storing the graph itself).
+
+Similar to the graphlet graph representation equation \ref{eq:GraphletGraphRepresentation} we can express the representation in terms of these landmarks:
+\begin{equation}\label{eq:LandmarksGraphRepresentation}
+	\times_{\{d_l|\ l\in L\}}: V(G) \to \IR^{|L|}
+\end{equation}
+
+A real life interpretation of this sampled harmonic closeness would be to define ones position by saying: \enquote{I am 1 km way from the university and 500 m way from the church.} The usefulness of this description depends on the selected landmarks $L$ of course. There is no generally optimal strategy to select them. Some example approaches are:\begin{itemize}
+	\item random initialization
+	\item high-degree graph vertices
+	\item in 2D-embedded (planar) graphs, use vertices on the convex hull
+	\item vertices with high (or low) closeness centrality
+	\item informed choice: cover the graph such that most vertices have at least one landmark close by
+\end{itemize}
+
+\subsection{Centrality measures without distances}
+
+The sampled closeness centrality proposed in the last subsection might not be good enough. On the other hand, more exact closeness computations are easily to expensive. On top of that, in some graphs, all vertices might be almost equally central (curse of dimensionality). Thus in this subsection we will explore alternatives to distances.
+
+\subsubsection{Degeneracy}
+
+Another way of defining centrality is via \textit{density}. Intuitively, it would make sense for a graph to have a dense core and a sparse shell. To be efficient, one has to be careful to not solve the Clique problem along the way.
+
+\begin{Definition}[Vertex degree]{def:VertexDegree}
+	Let $G$ be a graph and $H$ be a subgraph of $G$. For $v\in V(H) \subseteq V(G)$ we denote the degree of $v$ in $H$ by $\delta_H(v)$.
+\end{Definition}
+
+\begin{Definition}[$k$-core component of a graph]{def:kCoreComponent}
+	A $k$\textbf{-core component} $X$ of a graph $G$ is an inclusion-wise maximal connected induced subgraph $G[X]$ such that each vertex $x\in X$ has at least degree $k$ in the induces subgraph
+	\[ \delta_{G[X]}(x) \ge k \]
+\end{Definition}
+
+\begin{Definition}[$k$-core of a graph]{def:kCoreOfGraphs}
+	The subgraph $H(k)$ of $G$ consisting of all $k$-core components is called the $k$\textbf{-core of} $G$.
+\end{Definition}
+
+\begin{Definition}[Degeneracy]{def:degeneracy}
+	The \textbf{degeneracy} $\text{deg}(v)$ of $v\in V(G)$ is the largest $k$ such that $v$ is contained in the $k$-core of $G$.
+\end{Definition}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{images/degeneracyExample}
+	\caption{Example graph with all $k$-cores and thus degeneracies visualized.}
+	\label{fig:degeneracyexample} %TODO: Get code from pascal
+\end{figure}
+
+\begin{Definition}[Smallest first vertex ordering]{def:SmallestFirstVertexOrdering}
+	The vertices $v_1,\dots, v_n$ of $G$ are in \textbf{smallest first ordering} if for all $i\in \{1,\dots, n\}$ holds:
+	\begin{center}
+		$v_i$ is the vertex with smallest degree in $G\big[ \{ v_i,\dots, v_n \} \big]$
+	\end{center}
+\end{Definition}
+
+\begin{algorithm}[H]
+	\caption{Degeneracy sweep} \label{alg:Degeneracy} 
+	\begin{tabbing}
+		\textbf{Output:} \= \kill
+		\textbf{Input:} \>a graph $G$.\\
+		\textbf{Output:} \>the degeneracies $\text{deg}$ of all vertices $v\in V(G)$.
+	\end{tabbing}	
+	\begin{algorithmic}[1]		
+		\State $k=0$
+		\For {$i\in\{1,\dots,n\}$}
+			\State Remove $v \:= \amin{v\in V} d_{\min}$ and all incident edges from $G$
+			\State $k = \max(d_{\min}, k)$ \label{line:degeneracyLowerBound}
+			\State $\text{deg}(v)=k$ \label{line:degeneracyUpdate}
+		\EndFor
+	\end{algorithmic}
+	\textbf{Runtime}: $\mathcal{O}(n)$.\\
+	\textbf{Special property:} The algorithm processes the vertices in smallest first vertex order.
+\end{algorithm}
+
+
+\begin{Theorem}[Complexity of degeneracy]{thm:ComplexityOfDegeneracy}
+	Let $G$ be a graph. The degeneracy of all vertices $v\in V(G)$ can be computed in linear time.
+\end{Theorem}
+\begin{Proof}
+	We have proven the claim if algorithm \ref{alg:Degeneracy} runs in linear time. Therefore we need to show that $\text{deg}(v)=k$ in line \ref{line:degeneracyUpdate} correctly computes the degeneracy of $v$ in each iteration, since every vertex is touched exactly once in the for loop.
+	
+	Let $v_1,\dots,v_n$ be the smallest first vertex order used by the algorithm. Let $d_i := \delta_{G\big[ \{ v_i,\dots,v_n \} \big]}(v_i)$. Then 
+	\begin{equation}
+		\forall i\in\{1,\dots,n \}:\qquad \delta_{G\big[ \{ v_i,\dots,v_n \} \big]}(v) \ge d_i
+	\end{equation}
+	That is, $G\big[ \{ v_i,\dots,v_n \} \big]$ is a subgraph of the $d_i$-core of $G$.
+	
+	This also implies that $G\big[ \{ v_i,\dots,v_n \} \big]$ is a subgraph of the $d_j$-core for all $1\le j\le i$.
+	
+	Hence, line \ref{line:degeneracyLowerBound} of the algorithm sets a lower bound on the degeneracy of each vertex coming after the current one in the smallest first ordering.
+	
+	Now let $H$ ba a $k$-core component in $G$ and let $v_1,\dots, v_n$ be any smallest first ordering. Let $i$ be the smallest index with $v_i\in V(H)$. We claim that it is $d_i\ge k$. To se this note that as $V(H) \subseteq \{ v_i,\dots, v_n \}$, $H$ is a subgraph of $G\big[ \{v_i,\dots, v_n\} \big]$. This implies
+	\[ d_i = \delta_{G\big[ \{ v_i,\dots,v_n \} \big]}(v_i) \ge \delta_H(v_i) =k \]
+	
+	Thus line \ref{line:degeneracyLowerBound} of the algorithm also sets an upper bound on the degeneracy of each vertex. Thus the equality $d_i =k$ is proven.
+\end{Proof}
+
+With respect to the space complexity of Algorithm \ref{alg:Degeneracy} we note that in each iteration we have to find the remaining vertex with the smallest degree, remove it, and update the degrees of the (ex-)neighbors. We can do this in linear time using lists and arrays:
+\begin{itemize}
+	\item Store $G$ in a standard adjacency list format.
+	\item In an array $A$, for each $\delta \in \{1,\dots, n\}$ store a \textbf{double linked list}, initialized with all vertices that have degree $i$.
+	\item Om am array $B$, for each vertex, store its current degree and a pointer to its unique list entry maintained in $B$.
+	\item Start with the first non-empty list in $A$, popping the first element $v$, decreasing the degrees of its neighbors by one in $B$, and moving them from their current list in $A$ to the list of their new degree (using the pointer in $B$ for constant time access to the list entries).	
+	\item Continue looking for the first non-empty list in $A$, \textit{starting with the previous list} in $A$, checking if there is now a vertex with that degree.
+\end{itemize}
+Keep in mind that as $A$ contains double linked lists, removing and adding list items takes constant time.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Lecture 03 - 08.11.2021 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Message passing}
+
+Note that the power set of a set $X$ can be denoted as $2^X$. Since multisets contain objects a non-negative number of times, the set of all multisets of objects from $X$ can be denotes as $\mathbb{N}^X$.
+
+We will now introduce a very flexible framework. Assume that we have some feature representation $r_0 : V(G) \to \IR^d$ for the vertices in our graph. It is reasonable that in many situations neighboring vertices influence each other. Consider a social network where users spread their content along connections to their affiliates. In turn, neighbors might be influenced by that and hence spread (a variant of) that information (aka. \enquote{retweet}).
+
+\textbf{Message passing} models this kind of behavior as a \textit{simultaneous round based process}:
+
+\begin{Definition}[Message passing]{def:MessagePassing}
+	\textbf{Message passing} models a simultaneous round based process. Let $v\in V(G)$ be a vertex, $k\ge 0$ and $r_0:V(G)\to \mathcal{X}_0$ a feature representation.
+	
+	$\ldblbrace r_k(w)| \ w\in N(v) \rdblbrace$ is the multiset of (old) representations of the neighbors of $v\in V(G)$. Define the following two functions:
+	\begin{itemize}
+		\item $\text{agg}_k : \IN^{\mathcal{X}_k} \to\mathcal{X}_k^\prime$ \textbf{aggregates} a set of (old) representations to some value.
+		\item $\text{upd}_k : \mathcal{X}_k \times \mathcal{X}_k^\prime \to\mathcal{X}_{k+1}$ \textbf{updates} the representation of $v$ given its old representation and the aggregate of the neighbors.
+	\end{itemize}
+	Omit $k$ in the notation of $\text{upd}_k$ and $\text{agg}_k$ when the functions are iteration independent ($\text{upd}_0 = \text{upd}_1 = \dots$).
+	
+	With these notations message passing can be described as the following representation update:
+	\begin{equation}\label{eq:MessagePassing}
+		r_{k+1}(v) = \text{upd}_k \Big( r_k(v), \text{agg}_k \big(r_k(w)|\ w\in N(v)\big) \Big)
+	\end{equation}
+\end{Definition}
+
+In practice, message passing is often used with $\mathcal{X}_0 = \mathcal{X}_0^\prime = \mathcal{X}_1 = \mathcal{X}_1^\prime  = \dots = \IR^d$ for some fixed $d$. Then the aggregation function $\text{agg}:\IN^{IR^d}\to \IR^d$ a set of (old) representations to some value from the same domain. The update function is then of the form $\text{upd}:\IR^d\times \IR^d \to\IR^d$.
+
+Note that the definition of message passing depends on the multiset of neighbors of a vertex. Thus the order in which those neighbors are (practically) process does not influence the resulting representation of the central vertex. More general, the method is \textbf{invariant under isomorphism}:
+
+\begin{Theorem}[Message passing is invariant under isomorphism] {thm:MessagePassingInvariantUnderIsom}
+	Let $G$ and $H$ be two graphs and $r_0^G$ and $r_0^H$ two vertex representations with fixed aggregator and update functions:
+	\begin{itemize}
+		\item[] $r_1^G(v) = \text{upd}\Big( r_0^G(v), \text{agg}\big( \ldblbrace r_0^G(w)| \ w \in N(v) \rdblbrace \big) \Big)$
+		\item[] $r_1^H(v) = \text{upd}\Big( r_0^H(v), \text{agg}\big( \ldblbrace r_0^H(w)| \ w \in N(v) \rdblbrace \big) \Big)$
+	\end{itemize}	
+	Let $\varphi :V(G) \to V(H)$ be an isomorphism that respects $r_0^G$ and $r_0^H$:
+	\begin{equation}\label{eq:MessagePassingInvIsok0}
+		r_0^G(v) = r_0^H(\varphi(v))
+	\end{equation}
+	
+	Then message passing (the next iteration of the vertex representation) is invariant under isomorphism:
+	\[ \forall k\ge 0: \qquad r_k^G(v) = r_k^H\big( \varphi(v) \big) \]
+\end{Theorem}
+\begin{Proof}
+	The case $k=0$ is true by definition of $\varphi$ (equation \ref{eq:MessagePassingInvIsok0}). First lets prove $k=1$. Let $v\in V(G)$. We will use the preserved neighborhoods under isomorphism
+	\begin{equation}\label{eq:NeighborhoodsUnderIso}
+		w\in N(v) \iff \varphi(w)\in N\big(\varphi(v)\big)
+	\end{equation}
+	and the following equality of multisets (using again equation \ref{eq:MessagePassingInvIsok0}):
+	\begin{flalign}\label{eq:MultisetIsoEqualities}
+		\ldblbrace r_0^G (w)|\ w\in N(v) \rdblbrace 
+		&= \ldblbrace r_0^H (\varphi(w))|\ \varphi(w)\in N(\varphi(v)) \rdblbrace \nonumber\\
+		&=  \ldblbrace r_0^G (w^\prime)|\ w^\prime\in N(\varphi(v)) \rdblbrace 
+	\end{flalign}
+
+	Now it is:\begin{flalign*}
+		r_1^G(v) &= \text{upd}\Big( r_0^G(v), \ \text{agg}\big( \ldblbrace r_0^G(w)|\ w\in N(v)\rdblbrace \big) \Big) && \text{by definition}\\
+		&= \text{upd}\Big( r_0^H(\varphi(v)), \ \text{agg}\big( \ldblbrace r_0^G(w)|\ w\in N(v)\rdblbrace \big) \Big) && \text{using \ref{eq:MultisetIsoEqualities}}\\
+		&= \text{upd}\Big( r_0^H(\varphi(v)), \ \text{agg}\big( \ldblbrace r_0^H(w^\prime)|\ w^\prime\in N(\varphi(v))\rdblbrace \big) \Big) && \text{using \ref{eq:NeighborhoodsUnderIso}}\\
+		&= r_1^H(\varphi(v)) && \text{by definition}\\
+	\end{flalign*}
+	Now lets prove the statement for $k>1$.	%TODO: Prove message passing iso invaiance
+\end{Proof}
+
+We have just shown that the vertex representations computed by message passing do not depend on the order of the vertices. Note that instead of a multiset of neighbor representations, a set would work to.
+
+Also note, that in iteration $k$ the representation of $v$ is determined by the (intermediate) representations of all vertices of distance at most $k$ from $v$, since more the neighborhood of the next iteration depends on its neighbors of the previous one.
+
+\subsection{Aggregator functions}
+
+Common choices for aggregator functions are: \begin{itemize}
+	\item counts,
+	\item means, sums, products, 
+	\item histograms,
+	\item hashes and
+	\item neural networks.
+\end{itemize}
+
+Lets consider these aggregator functions one by one.
+
+\subsubsection{Neighbor count aggregator}
+
+Consider the \textbf{neighbor count aggregator}. Since the graph structure does not change, the multiset of neighbor representations of any vertex $v$ has constant size in each iteration. Thus the aggregator will, for each vertex, produce a \textbf{constant value} over all iterations of message passing. This is rather trivial.
+
+\subsubsection{Means, sums and products aggregator}
+
+One can also generalize the \textbf{means}, \textbf{sums} and \textbf{products aggregator} by defining a binary operation that is commutative and associative $\circ:\mathcal{X}\times \mathcal{X} \to \mathcal{X}$. For $X=\ldblbrace x_1,x_2,\dots,x_{|X|}\rdblbrace$
+\[ \bigcirc_{x\in X} x = x_1\circ x_2 \circ \dots \circ x_{|X|} \]
+is a well defined aggregator.
+
+\subsubsection{Histogram aggregator}
+
+Lets take a closer look at \textbf{histogram aggregators}. Let $\mathcal{X}$ be a set and $B_1, B_2,\dots, B_k\subseteq \mathcal{X}$ be bins. Then for $X\in \IN^{\mathcal{X}}$ and $B_i$ we can define
+\[ \text{count}_{B_i} (X) := |\ldblbrace x\in X| \ x\in B_i \rdblbrace| \]
+and $\text{hist}_{B_1,\dots,B_k}:\mathcal{X}\to \IN^k$ as
+\[ \text{hist}_{B_1,\dots,B_k}(X) := \big( \text{count}_{B_1}(X),\dots, \text{count}_{B_k}(X) \big) \]
+Note that the histograms generalize multisets, since a multiset is a histogram where each bin contains a single object. One can also define \textbf{weighted versions} where one sums over weights of objects in a bin.
+
+While histograms are very useful, whey are not straightforwardly applicable to message passing.
+
+\subsubsection{Hash aggregator}
+
+We can define an aggregator that assigns each multiset an (ideally unique) identifier (hash).
+Abstractly, we only require that $\#:\IN^{\mathcal{X}}\to \mathcal{X}^\prime$ is a function, i.e. that the same multiset will always be mapped to the same value.
+If such a function is injective it is called a \textbf{perfect hash function}. There are multiple ways of implementing this in practice.
+
+\subsubsection{Neural network aggregator}
+
+We can use any neural network $f_{\phi}:\IN^{\IR^d}\to \IR^{d^\prime}$ that accepts a set of representations as input and produces an output. In the simplest case, one can use a Perceptron with indegree equal to the maximum degree of the graph times $d$. One has to be careful to have a permutation invariant function, though.
+
+\subsection{Update functions}
+
+The update function $\text{upd}:\mathcal{X}_k \times\mathcal{X}_k^\prime \to \mathcal{X}_{k+1}$ updates the representation of $v$ given its old representation and the aggregate of the neighbors. 
+
+Again, in principle, one can use any function. It does not have to be commutative, and in fact it will likely lose information if it is, since it then no longer distinguishes between the representation of the current vertex and its neighborhood.
+
+Standard update functions are:\begin{itemize}
+	\item weighted sums and products of the results (for numerical data)\\
+	($+_{\alpha, \beta}:\IR^d\times\IR^d\to \IR^d$ like $+_{\alpha, \beta}(x,y):= \alpha \cdot x + \beta\cdot y$ or\\
+	$\cdot_{\alpha}:\IR^d\times\IR^d\to \IR^d$ like $\cdot_{\alpha}(x,y):= \alpha\cdot x\cdot y$),
+	\item neural networks (trainable functions),
+	\item hash functions, 
+	\item \dots
+\end{itemize}
+
+\subsection{Weisfeiler Lehman Relabeling Algorithm}
+
+\begin{Definition}[Weisfeiler Lehman Label Propagation Scheme]{def:WeisfeilerLehmanLabelPropagationScheme}
+	The \textbf{Weisfeiler Lehman Label Propagation Scheme} is defined as
+	\begin{equation}\label{eq:WLLabellingScheme}
+		r_{k+1}^{\text{WL}}(v) = \#_k \Big( r_k^{\text{WL}}(v), \ \text{id}_k\big( \ldblbrace r_k^{\text{WL}}(w)|\ w\in N(v)\rdblbrace \big) \Big)
+	\end{equation}
+	Where \begin{itemize}
+		\item[] $r_0^{\text{WL}}:V(G) \to\mathcal{X}_0$ maps to a discrete space,
+		\item[] $\text{id}_k:\IN^{X_k}\to \IN^{X_k}$ is the identity function and
+		\item[] $\#_k: \mathcal{X}_k \times \IN^{\mathcal{X}_k} \to \mathcal{X}_{k+1}$ is a perfect hash function.
+	\end{itemize}
+\end{Definition}
+
+Recall, that by definition the hash values in iteration $k$ encode the $k$-hop neighborhood of the vertex it has been assigned to.
+
+\begin{Theorem}[Isomorphy invariance of Weisfeiler and Lehman's vertex representation]{thm:WeisfeilerLehmanIsoInv}
+	Let $G, H$ be two graphs with vertex label functions $r_0^{\text{WL}, G}, r_0^{\text{WL}, H}$. If $G$ and $H$ are isomorphic (respecting $r_0^{\text{WL}, G}$, $r_0^{\text{WL}, H}$) then
+	\[ \forall k\ge 0:\qquad \ldblbrace r_k^{\text{WL}, G}(v)| \ v\in V(G)\rdblbrace =  \ldblbrace r_k^{\text{WL}, H}(v)| \ v\in V(H)\rdblbrace \]
+	This means the vertex representation can reduce the graph isomorphy to multiset equality.
+\end{Theorem}
+\begin{Proof}
+	The proof follows directly from the invariance theorem (theorem \ref{thm:MessagePassingInvariantUnderIsom}) for the message passing framework: For an isomorphism $\varphi:V(G) \to V(H)$ we have
+	\[ \forall v\in V(G):\qquad r_{k+1}^{\text{WL}, G}(v) = r_{k+1}^{\text{WL}, H}(\varphi(v)) \]
+	Hence, the multisets of vertex representations must be equal, as well, as $\varphi$ is a bijective function.
+\end{Proof}
+
+Note however that the other direction is true. There are non-isomorphic graphs which can have identical label histograms, see Figure \ref{fig:nonisographexamplewithidwl} for example.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{images/nonisoGraphExampleWithIdWL}
+	\caption{Example of non-isomorphic graphs with identical label histograms.}
+	\label{fig:nonisographexamplewithidwl} %TODO: write LaTex
+\end{figure}
+
+This result allows us to test if two graphs $G$ and $H$ are not isomorphic. Therefore simply compute the multisets $\ldblbrace r_k^{\text{WL}, G}(v)| \ v\in V(G)\rdblbrace$ and $\ldblbrace r_k^{\text{WL}, H}(v)| \ v\in V(H)\rdblbrace$. If these multisets differ for any $0\le k\le \max\big( |V(G)|, \ |V(H)| \big)$ the graphs $G$ and $H$ are not isomorphic.
+
+Note that if the two multisets are identical, the graphs might be isomorphic or not!
+
+\subsubsection{Efficient computation of the WL labels}
+
+Recall the Weisfeiler Lehman labeling scheme presented in equation \ref{eq:WLLabellingScheme}:
+\[ r_{k+1}^{\text{WL}}(v) = \#_k \Big( r_k^{\text{WL}}(v), \ \text{id}_k\big( \ldblbrace r_k^{\text{WL}}(w)|\ w\in N(v)\rdblbrace \big) \Big) \]
+
+To compute it efficiently, we need a fast way to hash multisets $X$ from $\mathcal{X}$. Let $<$ be a total order on $\mathcal{X}$, then sorting all elements in $X$ according to $<$ returns a unique results. Thus we can compute a canonical string of symbols for each multiset. This would already be a perfect hash function.
+
+With a canonical string of a neighbor label multiset, we can now build a lookup table (on the fly) that assigns each pair (central vertex label and canonical string of neighbor labels) a unique (integer) id. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Lecture 04 - 15.11.2021 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Message passing on GNNs}
+
+We would like to train a graph neural network to implement the message passing, i.a. compute the update and aggregation function, which we have seen already in equation \ref{eq:MessagePassing}
+\[ r_{k+1}(v) = \text{upd}_k\Big(r_k (v), \text{agg}_k\big( r_k(w)|\ w\in N(v) \big) \Big) \]
+
+In its oldest form, a graph neural network layer is defined for all $v\in V(G)$ as
+\begin{equation}\label{eq:GNNLayer}
+	r_{k+1}(v) = \sigma\Big( W_k^{\text{self}} r_k(v) \;+\; W_k^{\text{neigh}} \sum_{w\in N(v)} r_k(w) + b_k \Big)
+\end{equation}
+where\begin{itemize}
+	\item $W_k^{\text{self}}, W_k^{\text{neigh}}\in \IR^{d_k\times d_{k+1}}$ are trainable parameter matrices, 
+	\item $\sigma:\IR^{d_k+1}\to\IR^{d_k+1}$ is an element-wise non-linear function\\ (e.g. $\tanh$, ReLU or sigmoid) and 
+	\item $b\in\IR^{d_{k+1}}$ denotes trainable bias parameters.
+\end{itemize} 
+
+For now, lets assume that the weights and biases are chose appropriately and focus on the forward pass.
+
+Let use $\theta_k$ to denote \textit{trainable weights in iteration} $k$ of the GNN. We will interpret this as a flattened vector, i.e. $\theta_k \in \IR^{2d_k d_{k+1} + d_{k+1}}$. 
+
+Lets identify the update and aggregator function. The latter is trivial (and ensures permutation invariance):
+\begin{itemize}
+	\item[] $\text{agg}_k \big( \ldblbrace r_k(w)| \ w\in N(v) \rdblbrace \big) = \ \sum\limits_{w\in N(v)} r_k(v)$	
+	\item[] $\text{upd}_k = W^{\text{self}}_k r_k(v) + W^{\text{neigh}}_k \text{agg}_k (\cdot) + b_{k+1}$
+\end{itemize}
+
+\paragraph{Example - Message Passing on a GNN}
+
+Lets compute the next two representations for this example graph with a simple GNN:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{images/exampleMessagePassingGNN}
+	\caption{}
+	\label{fig:examplemessagepassinggnn}
+\end{figure}
+
+Initialize the GNN with 
+\begin{multicols}{2} \begin{itemize}
+	\item $\sigma = \text{id}$
+	\item $b_i = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$
+	\item $W_i^{\text{self}} \ \ \ = \begin{bmatrix} 1 & 1 \\ 0 & 1\end{bmatrix}$
+	\item $W_i^{\text{neigh}} = \begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix}$	
+\end{itemize}\end{multicols}
+We compute:
+\begin{flalign*}
+	r_1(v_1) &= W_0^{\text{self}}r_0(v_1) + W_0^{\text{neigh}}\Big( r_0(v_2) \Big) + b_i\\
+	&= \begin{bmatrix} 1 & 1 \\ 0 & 1\end{bmatrix} \begin{bmatrix} 1 \\ 0 \end{bmatrix} +
+	\begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix} \begin{bmatrix} 3 \\ 0 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}\\
+	&= \begin{bmatrix} 1 \\ 0 \end{bmatrix} + \begin{bmatrix} 3 \\ 3 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+	&= \begin{bmatrix} 4 \\ 3 \end{bmatrix}\\	
+	r_1(v_2) &= W_0^{\text{self}}r_0(v_2) + W_0^{\text{neigh}}\Big( r_0(v_1) + r_0(v_3) + r_0(v_4) \Big) + b_i\\
+	&= \begin{bmatrix} 1 & 1 \\ 0 & 1\end{bmatrix} \begin{bmatrix} 3 \\ 0 \end{bmatrix} +
+	\begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix} \Big(\begin{bmatrix} 1 \\ 0 \end{bmatrix} + \begin{bmatrix} 2 \\ 0 \end{bmatrix} + \begin{bmatrix} 2 \\ 0 \end{bmatrix} \Big) + \begin{bmatrix} 0 \\ 0 \end{bmatrix}\\
+	&= \begin{bmatrix} 3 \\ 0 \end{bmatrix} + \begin{bmatrix} 5 \\ 5 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+	&= \begin{bmatrix} 8 \\ 5 \end{bmatrix}\\
+	r_1(v_3) &= W_0^{\text{self}}r_0(v_3) + W_0^{\text{neigh}}\Big( r_0(v_2) + r_0(v_4) \Big) + b_i\\
+	&= \begin{bmatrix} 1 & 1 \\ 0 & 1\end{bmatrix} \begin{bmatrix} 2 \\ 0 \end{bmatrix} +
+	\begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix} \Big(\begin{bmatrix} 3 \\ 0 \end{bmatrix} + \begin{bmatrix} 2 \\ 0 \end{bmatrix} \Big) + \begin{bmatrix} 0 \\ 0 \end{bmatrix}\\
+	&= \begin{bmatrix} 2 \\ 0 \end{bmatrix} + \begin{bmatrix} 5 \\ 5 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+	&= \begin{bmatrix} 7 \\ 5 \end{bmatrix}\\
+	r_1(v_4) &= r_1(v_3) &= \begin{bmatrix} 7 \\ 5 \end{bmatrix}\\
+\end{flalign*}
+For the next iteration it is analogously: %TODO: CONTINUE SLIDE 11
+%\begin{flalign*}
+%	r_2(v_1) &= \begin{bmatrix} 1 & 1 \\ 0 & 1\end{bmatrix} \begin{bmatrix} 1 \\ 0 \end{bmatrix} +
+%	\begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix} \begin{bmatrix} 3 \\ 0 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}\\
+%	&= \begin{bmatrix} 1 \\ 0 \end{bmatrix} + \begin{bmatrix} 3 \\ 3 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+%	&= \begin{bmatrix} 4 \\ 3 \end{bmatrix}\\	
+%	r_2(v_2) &= \begin{bmatrix} 1 & 1 \\ 0 & 1\end{bmatrix} \begin{bmatrix} 3 \\ 0 \end{bmatrix} +
+%	\begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix} \Big(\begin{bmatrix} 1 \\ 0 \end{bmatrix} + \begin{bmatrix} 2 \\ 0 \end{bmatrix} + \begin{bmatrix} 2 \\ 0 \end{bmatrix} \Big) + \begin{bmatrix} 0 \\ 0 \end{bmatrix}\\
+%	&= \begin{bmatrix} 3 \\ 0 \end{bmatrix} + \begin{bmatrix} 5 \\ 5 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+%	&= \begin{bmatrix} 8 \\ 5 \end{bmatrix}\\
+%	r_2(v_3) &= \begin{bmatrix} 1 & 1 \\ 0 & 1\end{bmatrix} \begin{bmatrix} 2 \\ 0 \end{bmatrix} +
+%	\begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix} \Big(\begin{bmatrix} 3 \\ 0 \end{bmatrix} + \begin{bmatrix} 2 \\ 0 \end{bmatrix} \Big) + \begin{bmatrix} 0 \\ 0 \end{bmatrix}\\
+%	&= \begin{bmatrix} 2 \\ 0 \end{bmatrix} + \begin{bmatrix} 5 \\ 5 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+%	&= \begin{bmatrix} 7 \\ 5 \end{bmatrix}\\
+%	r_2(v_4) &= r_1(v_3) &= \begin{bmatrix} 7 \\ 5 \end{bmatrix}\\
+%\end{flalign*}
+
+
+\chapter{END >>>> FURTHER ANNOUNCED TOPICS}
 \section{Link prediction}
 
 
@@ -434,9 +999,7 @@ In this chapter we will introduce the learning of representations of graphs. We 
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% Lecture 03 - dd.mm.2021 %%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Lecture 04 - dd.mm.2021 %%%%
