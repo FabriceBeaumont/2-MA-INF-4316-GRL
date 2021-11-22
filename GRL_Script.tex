@@ -941,24 +941,45 @@ We compute:
 	\begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix} \Big(\begin{bmatrix} 3 \\ 0 \end{bmatrix} + \begin{bmatrix} 2 \\ 0 \end{bmatrix} \Big) + \begin{bmatrix} 0 \\ 0 \end{bmatrix}\\
 	&= \begin{bmatrix} 2 \\ 0 \end{bmatrix} + \begin{bmatrix} 5 \\ 5 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}
 	&= \begin{bmatrix} 7 \\ 5 \end{bmatrix}\\
-	r_1(v_4) &= r_1(v_3) &= \begin{bmatrix} 7 \\ 5 \end{bmatrix}\\
+	r_1(v_4) &= r_1(v_3) &= \begin{bmatrix} 7 \\ 5 \end{bmatrix}
 \end{flalign*}
-For the next iteration it is analogously: %TODO: CONTINUE SLIDE 11
-%\begin{flalign*}
-%	r_2(v_1) &= \begin{bmatrix} 1 & 1 \\ 0 & 1\end{bmatrix} \begin{bmatrix} 1 \\ 0 \end{bmatrix} +
-%	\begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix} \begin{bmatrix} 3 \\ 0 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}\\
-%	&= \begin{bmatrix} 1 \\ 0 \end{bmatrix} + \begin{bmatrix} 3 \\ 3 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}
-%	&= \begin{bmatrix} 4 \\ 3 \end{bmatrix}\\	
-%	r_2(v_2) &= \begin{bmatrix} 1 & 1 \\ 0 & 1\end{bmatrix} \begin{bmatrix} 3 \\ 0 \end{bmatrix} +
-%	\begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix} \Big(\begin{bmatrix} 1 \\ 0 \end{bmatrix} + \begin{bmatrix} 2 \\ 0 \end{bmatrix} + \begin{bmatrix} 2 \\ 0 \end{bmatrix} \Big) + \begin{bmatrix} 0 \\ 0 \end{bmatrix}\\
-%	&= \begin{bmatrix} 3 \\ 0 \end{bmatrix} + \begin{bmatrix} 5 \\ 5 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}
-%	&= \begin{bmatrix} 8 \\ 5 \end{bmatrix}\\
-%	r_2(v_3) &= \begin{bmatrix} 1 & 1 \\ 0 & 1\end{bmatrix} \begin{bmatrix} 2 \\ 0 \end{bmatrix} +
-%	\begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix} \Big(\begin{bmatrix} 3 \\ 0 \end{bmatrix} + \begin{bmatrix} 2 \\ 0 \end{bmatrix} \Big) + \begin{bmatrix} 0 \\ 0 \end{bmatrix}\\
-%	&= \begin{bmatrix} 2 \\ 0 \end{bmatrix} + \begin{bmatrix} 5 \\ 5 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}
-%	&= \begin{bmatrix} 7 \\ 5 \end{bmatrix}\\
-%	r_2(v_4) &= r_1(v_3) &= \begin{bmatrix} 7 \\ 5 \end{bmatrix}\\
-%\end{flalign*}
+For the next iteration it is analogously:
+\begin{flalign*}
+	r_2(v_1) &= \begin{bmatrix} 1 & 1 \\ 0 & 1\end{bmatrix} \begin{bmatrix} 4 \\ 3 \end{bmatrix} +
+	\begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix} \Big( \begin{bmatrix} 8 \\ 5 \end{bmatrix}\Big) + \begin{bmatrix} 0 \\ 0 \end{bmatrix}\\
+	&= \begin{bmatrix} 7 \\ 3 \end{bmatrix} + \begin{bmatrix} 13 \\ 8 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+	&= \begin{bmatrix} 20 \\ 11 \end{bmatrix}\\	
+	r_2(v_2) &= \begin{bmatrix} 1 & 1 \\ 0 & 1\end{bmatrix} \begin{bmatrix} 8 \\ 5 \end{bmatrix} +
+	\begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix} \Big(\begin{bmatrix} 4 \\ 3 \end{bmatrix} + \begin{bmatrix} 7 \\ 5 \end{bmatrix} + \begin{bmatrix} 7 \\ 5 \end{bmatrix} \Big) + \begin{bmatrix} 0 \\ 0 \end{bmatrix}\\
+	&= \begin{bmatrix} 13 \\ 5 \end{bmatrix} + \begin{bmatrix} 31 \\ 18 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+	&= \begin{bmatrix} 44 \\ 23 \end{bmatrix}\\
+	r_2(v_3) &= \begin{bmatrix} 1 & 1 \\ 0 & 1\end{bmatrix} \begin{bmatrix} 7 \\ 5 \end{bmatrix} +
+	\begin{bmatrix} 1 & 1 \\ 1 & 0\end{bmatrix} \Big(\begin{bmatrix} 7 \\ 5 \end{bmatrix} + \begin{bmatrix} 8 \\ 5 \end{bmatrix} \Big) + \begin{bmatrix} 0 \\ 0 \end{bmatrix}\\
+	&= \begin{bmatrix} 12 \\ 5 \end{bmatrix} + \begin{bmatrix} 25 \\ 15 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+	&= \begin{bmatrix} 37 \\ 20 \end{bmatrix}\\
+	r_2(v_4) &= r_2(v_3) &= \begin{bmatrix} 37 \\ 20 \end{bmatrix}
+\end{flalign*}
+
+Note that the numbers in this example tend to grow large rather quickly. In particular, one might expect, that the representations of high degree vertices will contain large values, with a large difference to the values of representations of low degree vertices.
+
+This might lead to numerical instabilities and difficulties in optimization of the loss function.
+
+To prevent this one may swap the sum aggregator with the \textit{mean aggregator}. This also limits the influence of individual vertices in the training.
+
+Another variation is to use the \textit{symmetric normalization} aggregator:
+
+\[ \text{agg}_k(\cdot) = \sum_{w\in N(v)} \frac{ r_k(w) }{ \sqrt{ |N(v)|\ |N(w)| } } \]
+
+\subsection{Message passing on GCNs}
+
+A very popular variant of GNNs are \textbf{Graph Convolutional Neural Networks} (\textbf{GCNs}). These use symmetric normalization and do not distinguish between representations of a vertex $v$ and its neighbors $w\in N(v)$:
+\begin{equation}\label{eq:GCNUpdate}
+	r_{k+1} (v)= \text{ReLU}\Big( W_k\ \sum_{w\in N(G)\cup\{v\}} \frac{r_k(w)}{ \sqrt{|N(v)|\ |N(w)|}} +b_k  \Big)
+\end{equation}
+Again, $W\in \IR^{d_k \times d_{k+1}}$ and $b\in \IR^{k+1}$ are trainable parameters.
+
+%TODO: CONTINUE SLIDE 15 (56 of 147)
+
 
 
 \chapter{END >>>> FURTHER ANNOUNCED TOPICS}
