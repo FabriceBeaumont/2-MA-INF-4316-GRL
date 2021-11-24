@@ -1,0 +1,9 @@
+[0] Config.pm:302> INFO - This is Biber 2.9
+[0] Config.pm:305> INFO - Logfile is 'GRL_Script.blg'
+[18] biber:313> INFO - === Tue Nov 23, 2021, 13:45:27
+[110] Biber.pm:371> INFO - Reading 'GRL_Script.bcf'
+[158] Biber.pm:857> INFO - Found 0 citekeys in bib section 0
+[162] Utils.pm:169> WARN - The file 'GRL_Script.bcf' does not contain any citations!
+[167] bbl.pm:617> INFO - Writing 'GRL_Script.bbl' with encoding 'ansinew'
+[167] bbl.pm:720> INFO - Output to GRL_Script.bbl
+[167] Biber.pm:110> INFO - WARNINGS: 1

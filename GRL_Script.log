@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.5.31)  22 NOV 2021 13:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.5.31)  24 NOV 2021 12:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1458,6 +1458,19 @@ Package: xfrac 2018/02/21 L3 Experimental split-level fractions
 . Defining command \sfrac with sig. 'omom' on line 420.
 .................................................
 )
+(/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty
+Package: bm 2017/01/16 v1.2c Bold Symbol Support (DPC/FMi)
+\symboldoperators=\mathgroup7
+\symboldletters=\mathgroup8
+\symboldsymbols=\mathgroup9
+\symboldupright=\mathgroup10
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 141.
+LaTeX Info: Redefining \bm on input line 207.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/esvect/esvect.sty
+Package: esvect 
+\symesvector=\mathgroup11
+)
 (/usr/share/texlive/texmf-dist/tex/latex/germbib/bibgerm.sty
 Package: bibgerm 2000/08/18 v0.1 Support for mixed language bibliographies
 
@@ -2050,8 +2063,8 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip157
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 112.
-Package hyperref Info: Option `breaklinks' set `true' on input line 112.
+Package hyperref Info: Option `colorlinks' set `true' on input line 113.
+Package hyperref Info: Option `breaklinks' set `true' on input line 113.
 
 (/usr/share/texlive/texmf-dist/tex/latex/cleveref/cleveref.sty
 Package: cleveref 2018/02/08 v0.21.1 Intelligent cross-referencing
@@ -2200,11 +2213,11 @@ Package biblatex Info: Automatic encoding selection.
 \openout4 = `GRL_Script.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'GRL_Script.bbl' not found.
-
-No file GRL_Script.bbl.
+Package biblatex Info: ... file 'GRL_Script.bbl' found.
+ (./GRL_Script.bbl)
 Package biblatex Info: Reference section=0 on input line 5.
 Package biblatex Info: Reference segment=0 on input line 5.
+
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count514
@@ -2326,6 +2339,11 @@ LaTeX Font Info:    Try loading font information for OT1+zplm on input line 5.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1zplm.fd
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
+LaTeX Font Info:    Try loading font information for U+esvect on input line 5.
+
+(/usr/share/texlive/texmf-dist/tex/latex/esvect/uesvect.fd
+File: uesvect.fd 
+)
 LaTeX Font Info:    Try loading font information for OT1+lmss on input line 5.
 
 (/usr/share/texmf/tex/latex/lm/ot1lmss.fd
@@ -2367,12 +2385,12 @@ LaTeX Font Info:    Font shape `T1/ppl/bx/n' in size <10> not available
  [4]
 Chapter 0.
 LaTeX Font Info:    Font shape `T1/ppl/bx/n' in size <20.74> not available
-(Font)              Font shape `T1/ppl/b/n' tried instead on input line 43.
-LaTeX Font Info:    Try loading font information for TS1+ppl on input line 52.
+(Font)              Font shape `T1/ppl/b/n' tried instead on input line 24.
+LaTeX Font Info:    Try loading font information for TS1+ppl on input line 33.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ppl.fd
 File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
 )
-Overfull \hbox (4.6987pt too wide) in paragraph at lines 52--54
+Overfull \hbox (4.6987pt too wide) in paragraph at lines 33--35
 \T1/ppl/m/n/10 out-put val-ues. In other words, given a set of train-ing data $
 \OML/zplm/m/it/10 X \OT1/zplm/m/n/10 = \OMS/zplm/m/n/10 f\OT1/zplm/m/n/10 (\OML
 /zplm/m/it/10 x\OT1/ppl/m/n/10 , \OML/zplm/m/it/10 f\OT1/zplm/m/n/10 (\OML/zplm
@@ -2380,7 +2398,7 @@ Overfull \hbox (4.6987pt too wide) in paragraph at lines 52--54
  []
 
 
-Overfull \hbox (11.5168pt too wide) in paragraph at lines 52--54
+Overfull \hbox (11.5168pt too wide) in paragraph at lines 33--35
 \T1/ppl/m/n/10 Near-est Neigh-bor, Naive Bayes Clas-si-fier, De-ci-sion Trees &
  Ran-dom Forests,
  []
@@ -2388,117 +2406,117 @@ Overfull \hbox (11.5168pt too wide) in paragraph at lines 52--54
 [5
 
 ]
-<images/VertexClassificationExample.png, id=239, 421.575pt x 210.7875pt>
+<images/VertexClassificationExample.png, id=259, 421.575pt x 210.7875pt>
 File: images/VertexClassificationExample.png Graphic file (type png)
 <use images/VertexClassificationExample.png>
 Package pdftex.def Info: images/VertexClassificationExample.png  used on input 
-line 93.
+line 74.
 (pdftex.def)             Requested size: 137.9979pt x 69.00044pt.
  [6]
-<images/GraphClassificationExample.png, id=245, 483.8075pt x 279.0425pt>
+<images/GraphClassificationExample.png, id=265, 483.8075pt x 279.0425pt>
 File: images/GraphClassificationExample.png Graphic file (type png)
 <use images/GraphClassificationExample.png>
 Package pdftex.def Info: images/GraphClassificationExample.png  used on input l
-ine 102.
+ine 83.
 (pdftex.def)             Requested size: 172.5pt x 99.49294pt.
-<images/LinkPredictionExample.png, id=247, 290.08376pt x 240.9pt>
+<images/LinkPredictionExample.png, id=267, 290.08376pt x 240.9pt>
 File: images/LinkPredictionExample.png Graphic file (type png)
 <use images/LinkPredictionExample.png>
-Package pdftex.def Info: images/LinkPredictionExample.png  used on input line 1
-11.
+Package pdftex.def Info: images/LinkPredictionExample.png  used on input line 9
+2.
 (pdftex.def)             Requested size: 137.9979pt x 114.60144pt.
  [7 <./images/VertexClassificationExample.png> <./images/GraphClassificationExa
 mple.png>] [8 <./images/LinkPredictionExample.png>]
 Chapter 1.
-Package mdframed Info: mdframed works in twoside mode on input line 129.
+Package mdframed Info: mdframed works in twoside mode on input line 110.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 129.
+(mdframed)              on input line 110.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 131.
-Package mdframed Info: mdframed works in twoside mode on input line 133.
+(mdframed)              on input line 112.
+Package mdframed Info: mdframed works in twoside mode on input line 114.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 114.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 117.
+Package mdframed Info: mdframed works in twoside mode on input line 121.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 121.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 123.
+Package mdframed Info: mdframed works in twoside mode on input line 127.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 127.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 133.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 136.
-Package mdframed Info: mdframed works in twoside mode on input line 140.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 140.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 142.
-Package mdframed Info: mdframed works in twoside mode on input line 146.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 146.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 152.
 [9
 
 ]
-Package mdframed Info: Not enough space on this page on input line 152.
-Package mdframed Info: mdframed works in twoside mode on input line 156.
+Package mdframed Info: Not enough space on this page on input line 133.
+Package mdframed Info: mdframed works in twoside mode on input line 137.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 156.
+(mdframed)              on input line 137.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 166.
+(mdframed)              on input line 147.
 LaTeX Font Info:    Font shape `T1/ppl/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/ppl/b/n' tried instead on input line 168.
-Package mdframed Info: mdframed works in twoside mode on input line 172.
+(Font)              Font shape `T1/ppl/b/n' tried instead on input line 149.
+Package mdframed Info: mdframed works in twoside mode on input line 153.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 172.
-LaTeX Font Info:    Try loading font information for U+fplmbb on input line 178
+(mdframed)              on input line 153.
+LaTeX Font Info:    Try loading font information for U+fplmbb on input line 159
 .
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ufplmbb.fd
 File: ufplmbb.fd 2003/10/30 Fontinst v1.914 font definitions for U/fplmbb.
 )
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 181.
+(mdframed)              on input line 162.
 
-Overfull \hbox (1.87393pt too wide) in paragraph at lines 181--181
+Overfull \hbox (1.87393pt too wide) in paragraph at lines 162--162
 [][] 
  []
 
 [10]
-Package mdframed Info: Not enough space on this page on input line 181.
+Package mdframed Info: Not enough space on this page on input line 162.
 LaTeX Font Info:    Font shape `T1/ppl/bx/n' in size <12> not available
-(Font)              Font shape `T1/ppl/b/n' tried instead on input line 191.
-Package mdframed Info: mdframed works in twoside mode on input line 195.
+(Font)              Font shape `T1/ppl/b/n' tried instead on input line 172.
+Package mdframed Info: mdframed works in twoside mode on input line 176.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 195.
+(mdframed)              on input line 176.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 205.
-Package mdframed Info: mdframed works in twoside mode on input line 207.
+(mdframed)              on input line 186.
+Package mdframed Info: mdframed works in twoside mode on input line 188.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 207.
+(mdframed)              on input line 188.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 212.
+(mdframed)              on input line 193.
  [11]
-Package mdframed Info: Not enough space on this page on input line 212.
+Package mdframed Info: Not enough space on this page on input line 193.
 
 
-LaTeX Warning: Reference `)' on page 12 undefined on input line 214.
+LaTeX Warning: Reference `)' on page 12 undefined on input line 195.
 
-<images/crossvalidation.png, id=289, 820.06375pt x 733.74126pt>
+<images/crossvalidation.png, id=309, 820.06375pt x 733.74126pt>
 File: images/crossvalidation.png Graphic file (type png)
 <use images/crossvalidation.png>
-Package pdftex.def Info: images/crossvalidation.png  used on input line 218.
+Package pdftex.def Info: images/crossvalidation.png  used on input line 199.
 (pdftex.def)             Requested size: 241.49895pt x 216.07114pt.
 
-Overfull \hbox (2.84593pt too wide) in paragraph at lines 227--228
+Overfull \hbox (2.84593pt too wide) in paragraph at lines 208--209
 \T1/ppl/m/n/10 Interestingly, some base-line meth-ods, which do not in-clude sp
 e-cific graph struc-
  []
@@ -2507,162 +2525,180 @@ e-cific graph struc-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [12 <./images/crossvalidation.png>]
-Package mdframed Info: mdframed works in twoside mode on input line 241.
+Package mdframed Info: mdframed works in twoside mode on input line 222.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 222.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 230.
+ [13]
+Package mdframed Info: mdframed works in twoside mode on input line 232.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 232.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 241.
+Package mdframed Info: mdframed works in twoside mode on input line 252.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 249.
- [13]
-Package mdframed Info: mdframed works in twoside mode on input line 251.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 251.
+(mdframed)              on input line 252.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 260.
-Package mdframed Info: mdframed works in twoside mode on input line 271.
+ [14]
+Package mdframed Info: mdframed works in twoside mode on input line 269.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 271.
+(mdframed)              on input line 269.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 272.
+Package mdframed Info: mdframed works in twoside mode on input line 274.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 274.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 279.
- [14]
-Package mdframed Info: mdframed works in twoside mode on input line 288.
+Package mdframed Info: mdframed works in twoside mode on input line 283.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 288.
+(mdframed)              on input line 283.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 291.
-Package mdframed Info: mdframed works in twoside mode on input line 293.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 293.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 298.
-Package mdframed Info: mdframed works in twoside mode on input line 302.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 302.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 306.
+(mdframed)              on input line 287.
  [15] [16]
+Package mdframed Info: mdframed works in twoside mode on input line 289.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 289.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 292.
+
+Underfull \hbox (badness 10000) in paragraph at lines 304--307
+
+ []
+
 Package mdframed Info: mdframed works in twoside mode on input line 308.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 308.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 311.
+(mdframed)              on input line 314.
+Package mdframed Info: mdframed works in twoside mode on input line 316.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 316.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 318.
 
-Underfull \hbox (badness 10000) in paragraph at lines 323--326
+Underfull \hbox (badness 10000) in paragraph at lines 320--322
 
  []
 
-Package mdframed Info: mdframed works in twoside mode on input line 327.
+[17]
+Package mdframed Info: mdframed works in twoside mode on input line 329.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 327.
+(mdframed)              on input line 329.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 333.
+(mdframed)              on input line 331.
 Package mdframed Info: mdframed works in twoside mode on input line 335.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 335.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 337.
-
-Underfull \hbox (badness 10000) in paragraph at lines 339--341
-
- []
-
-[17]
-Package mdframed Info: mdframed works in twoside mode on input line 348.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 348.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 350.
-Package mdframed Info: mdframed works in twoside mode on input line 354.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 354.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 362.
+(mdframed)              on input line 343.
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 365.
+put line 346.
 
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 380.
+(amsmath)                 on input line 361.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [18]
-Package mdframed Info: mdframed works in twoside mode on input line 390.
+Package mdframed Info: mdframed works in twoside mode on input line 371.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 390.
+(mdframed)              on input line 371.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 394.
+(mdframed)              on input line 375.
 
 [19]
-Underfull \hbox (badness 10000) in paragraph at lines 414--416
+Underfull \hbox (badness 10000) in paragraph at lines 395--397
 
  []
 
 
-Overfull \hbox (5.36613pt too wide) in paragraph at lines 442--443
+Overfull \hbox (5.36613pt too wide) in paragraph at lines 423--424
 []\T1/ppl/m/n/10 To un-der-stand the run-time com-plex-ity, we need to con-side
 r how many graphlets
  []
 
 [20]
-Underfull \hbox (badness 10000) in paragraph at lines 474--476
+Underfull \hbox (badness 10000) in paragraph at lines 455--457
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 503--505
+Underfull \hbox (badness 10000) in paragraph at lines 484--486
 
  []
 
 [21] [22]
-Package mdframed Info: mdframed works in twoside mode on input line 530.
+Package mdframed Info: mdframed works in twoside mode on input line 511.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 530.
+(mdframed)              on input line 511.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 537.
-Package mdframed Info: mdframed works in twoside mode on input line 545.
+(mdframed)              on input line 518.
+Package mdframed Info: mdframed works in twoside mode on input line 526.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 545.
+(mdframed)              on input line 526.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 555.
+(mdframed)              on input line 536.
  [23]
-Package mdframed Info: Not enough space on this page on input line 555.
-<images/closenessCentrality.png, id=375, 468.75125pt x 517.935pt>
+Package mdframed Info: Not enough space on this page on input line 536.
+<images/closenessCentrality.png, id=395, 468.75125pt x 517.935pt>
 File: images/closenessCentrality.png Graphic file (type png)
 <use images/closenessCentrality.png>
-Package pdftex.def Info: images/closenessCentrality.png  used on input line 559
+Package pdftex.def Info: images/closenessCentrality.png  used on input line 540
 .
 (pdftex.def)             Requested size: 241.49895pt x 266.83827pt.
  [24 <./images/closenessCentrality.png>]
+Package mdframed Info: mdframed works in twoside mode on input line 549.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 549.
+
+Underfull \hbox (badness 10000) in paragraph at lines 553--555
+
+ []
+
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 557.
+<images/harmonicClosenessCentrality.png, id=402, 538.01pt x 355.3275pt>
+File: images/harmonicClosenessCentrality.png Graphic file (type png)
+<use images/harmonicClosenessCentrality.png>
+Package pdftex.def Info: images/harmonicClosenessCentrality.png  used on input 
+line 561.
+(pdftex.def)             Requested size: 241.49895pt x 159.49467pt.
 Package mdframed Info: mdframed works in twoside mode on input line 568.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
@@ -2675,108 +2711,90 @@ Underfull \hbox (badness 10000) in paragraph at lines 572--574
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 576.
-<images/harmonicClosenessCentrality.png, id=382, 538.01pt x 355.3275pt>
-File: images/harmonicClosenessCentrality.png Graphic file (type png)
-<use images/harmonicClosenessCentrality.png>
-Package pdftex.def Info: images/harmonicClosenessCentrality.png  used on input 
-line 580.
-(pdftex.def)             Requested size: 241.49895pt x 159.49467pt.
-Package mdframed Info: mdframed works in twoside mode on input line 587.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 587.
-
-Underfull \hbox (badness 10000) in paragraph at lines 591--593
-
- []
-
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 595.
 [25 <./images/harmonicClosenessCentrality.png>] [26]
-Package mdframed Info: mdframed works in twoside mode on input line 620.
+Package mdframed Info: mdframed works in twoside mode on input line 601.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 620.
+(mdframed)              on input line 601.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 622.
-Package mdframed Info: mdframed works in twoside mode on input line 624.
+(mdframed)              on input line 603.
+Package mdframed Info: mdframed works in twoside mode on input line 605.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 624.
+(mdframed)              on input line 605.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 627.
-Package mdframed Info: mdframed works in twoside mode on input line 629.
+(mdframed)              on input line 608.
+Package mdframed Info: mdframed works in twoside mode on input line 610.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 629.
+(mdframed)              on input line 610.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 631.
-Package mdframed Info: mdframed works in twoside mode on input line 633.
+(mdframed)              on input line 612.
+Package mdframed Info: mdframed works in twoside mode on input line 614.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 633.
+(mdframed)              on input line 614.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 635.
-<images/degeneracyExample.png, id=399, 1459.4525pt x 586.19pt>
+(mdframed)              on input line 616.
+<images/degeneracyExample.png, id=419, 1459.4525pt x 586.19pt>
 File: images/degeneracyExample.png Graphic file (type png)
 <use images/degeneracyExample.png>
-Package pdftex.def Info: images/degeneracyExample.png  used on input line 639.
+Package pdftex.def Info: images/degeneracyExample.png  used on input line 620.
 (pdftex.def)             Requested size: 241.49895pt x 96.99445pt.
 
 Underfull \vbox (badness 3058) has occurred while \output is active []
 
  [27]
-Package mdframed Info: mdframed works in twoside mode on input line 644.
+Package mdframed Info: mdframed works in twoside mode on input line 625.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 644.
+(mdframed)              on input line 625.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 649.
-Package mdframed Info: mdframed works in twoside mode on input line 671.
+(mdframed)              on input line 630.
+Package mdframed Info: mdframed works in twoside mode on input line 652.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 671.
+(mdframed)              on input line 652.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 673.
+(mdframed)              on input line 654.
 
 [28 <./images/degeneracyExample.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 690--692
+Underfull \hbox (badness 10000) in paragraph at lines 671--673
 
  []
 
 [29]
-Package mdframed Info: mdframed works in twoside mode on input line 715.
+Package mdframed Info: mdframed works in twoside mode on input line 696.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 715.
+(mdframed)              on input line 696.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 710.
+ [30]
+Package mdframed Info: mdframed works in twoside mode on input line 716.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 716.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 729.
- [30]
-Package mdframed Info: mdframed works in twoside mode on input line 735.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 735.
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 748.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [31]
-Underfull \hbox (badness 10000) in paragraph at lines 766--769
+Underfull \hbox (badness 10000) in paragraph at lines 747--750
 
  []
 
 [32]
-Overfull \hbox (15.85683pt too wide) in paragraph at lines 798--799
+Overfull \hbox (15.85683pt too wide) in paragraph at lines 779--780
 \T1/ppl/m/n/10 Lets take a closer look at \T1/ppl/b/n/10 his-togram ag-gre-ga-t
 ors\T1/ppl/m/n/10 . Let $\OMS/zplm/m/n/10 X$ \T1/ppl/m/n/10 be a set and $\OML/
 zplm/m/it/10 B[]\OT1/ppl/m/n/10 , \OML/zplm/m/it/10 B[]\OT1/ppl/m/n/10 , [] , \
@@ -2784,80 +2802,174 @@ OML/zplm/m/it/10 B[] \OMS/zplm/m/n/10 ^^R
  []
 
 [33]
-Package mdframed Info: mdframed works in twoside mode on input line 833.
+Package mdframed Info: mdframed works in twoside mode on input line 814.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 833.
+(mdframed)              on input line 814.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 843.
-Package mdframed Info: mdframed works in twoside mode on input line 847.
+(mdframed)              on input line 824.
+Package mdframed Info: mdframed works in twoside mode on input line 828.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 847.
+(mdframed)              on input line 828.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 851.
+(mdframed)              on input line 832.
  [34]
-Underfull \hbox (badness 10000) in paragraph at lines 854--857
+Underfull \hbox (badness 10000) in paragraph at lines 835--838
 
  []
 
-<images/nonisoGraphExampleWithIdWL.png, id=485, 1056.94875pt x 700.6175pt>
+<images/nonisoGraphExampleWithIdWL.png, id=505, 1056.94875pt x 700.6175pt>
 File: images/nonisoGraphExampleWithIdWL.png Graphic file (type png)
 <use images/nonisoGraphExampleWithIdWL.png>
 Package pdftex.def Info: images/nonisoGraphExampleWithIdWL.png  used on input l
-ine 862.
+ine 843.
 (pdftex.def)             Requested size: 241.49895pt x 160.08026pt.
+
+Overfull \hbox (35.27982pt too wide) in paragraph at lines 848--849
+\T1/ppl/m/n/10 fore sim-ply com-pute the mul-ti-sets $\OMS/zplm/m/n/10 f f[]g g
+$ \T1/ppl/m/n/10 and $\OMS/zplm/m/n/10 f f[]g g$\T1/ppl/m/n/10 .
+ []
+
 [35 <./images/nonisoGraphExampleWithIdWL.png>] [36]
-<images/exampleMessagePassingGNN.png, id=500, 409.53pt x 244.915pt>
+<images/exampleMessagePassingGNN.png, id=520, 409.53pt x 244.915pt>
 File: images/exampleMessagePassingGNN.png Graphic file (type png)
 <use images/exampleMessagePassingGNN.png>
 Package pdftex.def Info: images/exampleMessagePassingGNN.png  used on input lin
-e 915.
+e 896.
 (pdftex.def)             Requested size: 241.49895pt x 144.42758pt.
 
-Underfull \vbox (badness 3009) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [37 <./images/exampleMessagePassingGNN.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [38]
-Underfull \vbox (badness 3907) has occurred while \output is active []
+Underfull \vbox (badness 1072) has occurred while \output is active []
 
  [39]
-[40]
-Chapter 2.
-[41
+Overfull \hbox (3.60672pt too wide) in paragraph at lines 973--974
+[]\T1/ppl/m/n/10 There are a lot of free-doms when con-fig-ur-ing GINs. Com-mon
+ hyper-parameters
+ []
 
-] [42
+[40]
+Package mdframed Info: mdframed works in twoside mode on input line 993.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 993.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 1001.
+
+Underfull \vbox (badness 1436) has occurred while \output is active []
+
+ [41]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [42]
+Package mdframed Info: mdframed works in twoside mode on input line 1075.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 1075.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 1086.
+Package mdframed Info: You first box width is to small
+ mdframed fixed it
+(mdframed)              on input line 1086.
+
+[43] [44] [45] [46
 
 ]
+Chapter 2.
+Package mdframed Info: mdframed works in twoside mode on input line 1126.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 1126.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 1132.
+[47]
+Package mdframed Info: mdframed works in twoside mode on input line 1139.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 1139.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 1150.
+ [48]
+Package mdframed Info: mdframed works in twoside mode on input line 1173.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 1173.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 1179.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1181--1183
+
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [49]
+Package mdframed Info: mdframed works in twoside mode on input line 1195.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 1195.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 1203.
+
+Underfull \vbox (badness 6396) has occurred while \output is active []
+
+ [50]
+Underfull \hbox (badness 10000) in paragraph at lines 1206--1208
+
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [51]
+Overfull \hbox (7.87962pt too wide) detected at line 1247
+[][][]\OML/zplm/m/it/10 R[] \OT1/zplm/m/n/10 = \OML/zplm/m/it/10 ^^[[]R[]W[] \O
+T1/zplm/m/n/10 + \OML/zplm/m/it/10 A[]R[]R[]W[] \OT1/zplm/m/n/10 + \OML/zplm/m/
+it/10 b[][]
+ []
+
+[52]
 Chapter 3.
-[43] [44
+[53
+
+] [54
 
 ]
 Chapter 4.
+[55] [56
 
-Overfull \hbox (2.35568pt too wide) in paragraph at lines 1005--1006
+]
+Chapter 5.
+
+Overfull \hbox (2.35568pt too wide) in paragraph at lines 1265--1266
 \T1/ppl/m/n/10 In this chap-ter we dis-cuss learn-ing with (im-plicit) graph re
 p-re-sen-ta-tions. There-
  []
 
 
-Overfull \hbox (10.72084pt too wide) in paragraph at lines 1009--1009
+Overfull \hbox (10.72084pt too wide) in paragraph at lines 1268--1268
 []\T1/ppl/b/n/14.4 Kernel of spe-cial in-ter-est: Weisfeiler-Lehman ker-
  []
 
-[45] [46
-
-]
-Chapter 5.
-[47] (./GRL_Exercises.tex [48
+[57] (./GRL_Exercises.tex [58
 
 ]
 Chapter 6.
-[49]
+[59]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 59.
@@ -2876,18 +2988,22 @@ Overfull \hbox (51.9397pt too wide) in paragraph at lines 12--77
 )
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [50]
-[51] [52
+ [60]
+[61] [62
 
-] [53]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1084.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1084.
+] [63]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1323.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1323.
  (./GRL_Script.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1084.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1084.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1323.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1323.
 
 Package rerunfilecheck Info: File `GRL_Script.out' has not changed.
-(rerunfilecheck)             Checksum: 7735B7893DF019FD17A52C1BAEDC04A9;2473.
+(rerunfilecheck)             Checksum: 9DD50610E2F488F20509ADC72A1BE7CE;2823.
+
+
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 0.43996pt have occurred.
 
 
 LaTeX Warning: There were undefined references.
@@ -2900,13 +3016,13 @@ Package logreq Info: Writing requests to 'GRL_Script.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 61277 strings out of 492982
- 1383252 string characters out of 6134896
- 1948758 words of memory out of 5000000
- 63658 multiletter control sequences out of 15000+600000
- 614046 words of font info for 173 fonts, out of 8000000 for 9000
+ 61519 strings out of 492982
+ 1386879 string characters out of 6134896
+ 1950375 words of memory out of 5000000
+ 63843 multiletter control sequences out of 15000+600000
+ 631752 words of font info for 221 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 65i,14n,101p,10446b,2533s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 65i,14n,101p,10446b,2534s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist
@@ -2914,14 +3030,17 @@ f-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist
 type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
 public/mathpazo/fplmbb.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ma
 thpazo/fplmr.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/mathpazo/fpl
-mri.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/texl
+mri.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam
+10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr
+/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplbi8a.pfb></usr/share/texl
 ive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on GRL_Script.pdf (53 pages, 696636 bytes).
+st/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/urw/palatino/uplri8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/e
+svect/vect10.pfb>
+Output written on GRL_Script.pdf (63 pages, 739492 bytes).
 PDF statistics:
- 662 PDF objects out of 1000 (max. 8388607)
- 543 compressed objects within 6 object streams
- 181 named destinations out of 1000 (max. 500000)
- 458 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 766 PDF objects out of 1000 (max. 8388607)
+ 633 compressed objects within 7 object streams
+ 213 named destinations out of 1000 (max. 500000)
+ 490 words of extra memory for PDF output out of 10000 (max. 10000000)
 

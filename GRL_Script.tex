@@ -16,25 +16,6 @@ Rheinische Friedrich-Wilhelms-Universität Bonn}
 
 %----------------------------------------------------------
 
-%TODO Remarks:
-% Lec 0: Slide 7/38 - "focus ON the following questions"
-% Lec 0: Slide 20/38 - "additionally contain INformation about"
-% Lec 0: Slide 26/38 - "Decision Trees, and Random Forests" - Also this time the methods are writen with capitalized letters. Earler they were not. (Also not all of them were listed.)
-% Lec 0: Slide 31 vs slide 33- In the vertex classification example the data-consistent hypothesis is presented as THE correct solution. In the graph classifiaction the presented one is suggested to fit the example. I personally think the later formulation is better.
-% Lec 0: Slide 33/38 - "graphs of THE blue class"
-
-% Lec 1: Slide 10/54 - Using "vertices", but previously "nodes"
-% Lec 1: Slide 10/54 - So simple graphs can have loop-edges? e={v, v} \in E
-% Lec 1: Slide 16+17/54 - The loss function for vertex property prediction is given as L_{G,y} but later on slide 20 and the following as L_{V,y}
-% Lec 1: Slide 36/54 - EXAMPLE of many switches between using 'node' and 'vertex'. Both were introduced as reasonable, but maybe consistency is more scientific. 
-% Lec 1: Slide 43/54: In both cases it says "number of edges incident to v". I guess '(incident) edges starting/ending at v' is more suitable?
-% Lec 1: Slide 47/54: Equaltiy should be an upper bound. Counter example: Graph consisting of one edge.
-% Lec 2: Slide 41/59: The outer round bracket of the Landau notation is not closed. Also l\in L is introduced one slide after its usage.
-% Lec 2: Slide 48/59: Missing the definition of the component as $X$:	"A $k$\textbf{-core component} $X$ of a graph $G$"
-% Lec 3: Slide 59/59: First item: bracket is never closed.
-% Lec 3: Slide 34/50: First item: a -> an identifier
-% Lec 4: Slide 9/36: "in iteration $k$ of THE GNN" (?)
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Lecture 00 - 11.10.2021 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -124,7 +105,7 @@ As the given examples indicate, it can be tedious to analyze graph data and choo
 %%%%% Lecture 01 - 18.10.2021 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{Vertex classifications and local features}
+\chapter{Vertex classifications and local features} %Learning vertex representations for graphs
 
 \begin{Definition}[Directed graph]{def:DirectedGraph}
 	A \textbf{directed graph} (\textbf{digraph}) $G=(V,E)$ consists of a set of vertices $V(G)$ and a set of edges $E(G) \subseteq V\times V$.
@@ -146,8 +127,8 @@ As variable naming conventions, we say that graphs have $n=|V(G)|$ vertices and 
 \begin{Definition}[Graph attributes and labels]{def:GraphAttributesLabels}
 	Given an undirected or directed graph $G$, one can define additional data associated with the graph, vertices or edges. Such data is called \textbf{attributes} (if the value domain is continuous) or \textbf{labels} (if the value domain is discrete/categorical).
 	
-	This association can be formalized using \textbf{feature spaces} $\mathcal{X}^G$, $\mathcal{X}^V$ and $\mathcal{X}^E$:
-	\[ f_G(G) \to \mathcal{X}^G,\qquad\qquad f_V\big(V(G)\big) \to \mathcal{X}^V,\qquad\qquad f_E\big(E(G)\big) \to \mathcal{X}^E\]
+	This association can be formalized using \textbf{feature spaces} $\mathcal{X}$, $\mathcal{X}^\prime$ and $\mathcal{X}^{\prime\prime}$:
+	\[ f_G: G \to \mathcal{X},\qquad\qquad f_V: V(G) \to \mathcal{X}^\prime,\qquad\qquad f_E : E(G) \to \mathcal{X}^{\prime \prime}\]
 	(A feature space is some product space $\mathcal{X}=(X_1,X_2,\dots,X_d)$ where the $X_i$ are some appropriately chosen sets.)
 \end{Definition}
 
@@ -445,7 +426,7 @@ To understand the runtime complexity, we need to consider how many graphlets wit
 	\item[For $k=4$] There is only the $3$-star.\\
 	We need to lookup all $\mathcal{O}\big({d\choose 3}\big)$ neighbor triplets of $v$ and check if they induce the $3$-star graphlet. This can be done in $\mathcal{O}(d^3 \gamma(4))$.
 	\item[Fpr $k=5$] All connected graphlets with no $4$-paths have the $3$-star as subgraph.\\
-	Thus enumerate all occurrences of the $3$-star and check the neighbors of each node (in the star) to see if they induce one of the graphlets. This takes $\mathcal{O}(d\gamma(5))$ per induced graph.
+	Thus enumerate all occurrences of the $3$-star and check the neighbors of each vertex (in the star) to see if they induce one of the graphlets. This takes $\mathcal{O}(d\gamma(5))$ per induced graph.
 \end{itemize}
 Thus the overall runtime is $\mathcal{O}(d^4\gamma(5))$.
 
@@ -521,7 +502,7 @@ One may also ask, how significant these results are, given that we only consider
 
 Keep in mind, that so far we considered unlabeled graphs. Taking labels into account yields much more pairwise non-isomorphic graphs. Note that in practice, graphlet counting (and multiple other pattern based representation methods) tends to \textit{work better with discretely labeled attributes} than with continuous attributes (e.g. $f_V:V(G)\to\IR$). Thus it may be desirable to discretize given continuous labels.
 
-\section{Distance based node representations}
+\section{Distance based vertex representations}
 
 We have seen that graphlet counting (as an example of local feature counting) extends the trivial neighborhood set representation to the immediate neighborhood. But it to does not go beyond a few neighbors.
 
@@ -715,28 +696,28 @@ We will now introduce a very flexible framework. Assume that we have some featur
 \begin{Definition}[Message passing]{def:MessagePassing}
 	\textbf{Message passing} models a simultaneous round based process. Let $v\in V(G)$ be a vertex, $k\ge 0$ and $r_0:V(G)\to \mathcal{X}_0$ a feature representation.
 	
-	$\ldblbrace r_k(w)| \ w\in N(v) \rdblbrace$ is the multiset of (old) representations of the neighbors of $v\in V(G)$. Define the following two functions:
+	$\mset{ r_k(w)| \ w\in N(v) }$ is the multiset of (old) representations of the neighbors of $v\in V(G)$. Define the following two functions:
 	\begin{itemize}
-		\item $\text{agg}_k : \IN^{\mathcal{X}_k} \to\mathcal{X}_k^\prime$ \textbf{aggregates} a set of (old) representations to some value.
-		\item $\text{upd}_k : \mathcal{X}_k \times \mathcal{X}_k^\prime \to\mathcal{X}_{k+1}$ \textbf{updates} the representation of $v$ given its old representation and the aggregate of the neighbors.
+		\item $\operatorname{agg}_k : \IN^{\mathcal{X}_k} \to\mathcal{X}_k^\prime$ \textbf{aggregates} a set of (old) representations to some value.
+		\item $\operatorname{upd}_k : \mathcal{X}_k \times \mathcal{X}_k^\prime \to\mathcal{X}_{k+1}$ \textbf{updates} the representation of $v$ given its old representation and the aggregate of the neighbors.
 	\end{itemize}
-	Omit $k$ in the notation of $\text{upd}_k$ and $\text{agg}_k$ when the functions are iteration independent ($\text{upd}_0 = \text{upd}_1 = \dots$).
+	Omit $k$ in the notation of $\operatorname{upd}_k$ and $\operatorname{agg}_k$ when the functions are iteration independent ($\operatorname{upd}_0 = \operatorname{upd}_1 = \dots$).
 	
 	With these notations message passing can be described as the following representation update:
 	\begin{equation}\label{eq:MessagePassing}
-		r_{k+1}(v) = \text{upd}_k \Big( r_k(v), \text{agg}_k \big(r_k(w)|\ w\in N(v)\big) \Big)
+		r_{k+1}(v) = \operatorname{upd}_k \Big( r_k(v), \operatorname{agg}_k \big(r_k(w)|\ w\in N(v)\big) \Big)
 	\end{equation}
 \end{Definition}
 
-In practice, message passing is often used with $\mathcal{X}_0 = \mathcal{X}_0^\prime = \mathcal{X}_1 = \mathcal{X}_1^\prime  = \dots = \IR^d$ for some fixed $d$. Then the aggregation function $\text{agg}:\IN^{IR^d}\to \IR^d$ a set of (old) representations to some value from the same domain. The update function is then of the form $\text{upd}:\IR^d\times \IR^d \to\IR^d$.
+In practice, message passing is often used with $\mathcal{X}_0 = \mathcal{X}_0^\prime = \mathcal{X}_1 = \mathcal{X}_1^\prime  = \dots = \IR^d$ for some fixed $d$. Then the aggregation function $\operatorname{agg}:\IN^{IR^d}\to \IR^d$ a set of (old) representations to some value from the same domain. The update function is then of the form $\operatorname{upd}:\IR^d\times \IR^d \to\IR^d$.
 
 Note that the definition of message passing depends on the multiset of neighbors of a vertex. Thus the order in which those neighbors are (practically) process does not influence the resulting representation of the central vertex. More general, the method is \textbf{invariant under isomorphism}:
 
 \begin{Theorem}[Message passing is invariant under isomorphism] {thm:MessagePassingInvariantUnderIsom}
 	Let $G$ and $H$ be two graphs and $r_0^G$ and $r_0^H$ two vertex representations with fixed aggregator and update functions:
 	\begin{itemize}
-		\item[] $r_1^G(v) = \text{upd}\Big( r_0^G(v), \text{agg}\big( \ldblbrace r_0^G(w)| \ w \in N(v) \rdblbrace \big) \Big)$
-		\item[] $r_1^H(v) = \text{upd}\Big( r_0^H(v), \text{agg}\big( \ldblbrace r_0^H(w)| \ w \in N(v) \rdblbrace \big) \Big)$
+		\item[] $r_1^G(v) = \operatorname{upd}\Big( r_0^G(v), \operatorname{agg}\big( \mset{ r_0^G(w)| \ w \in N(v) } \big) \Big)$
+		\item[] $r_1^H(v) = \operatorname{upd}\Big( r_0^H(v), \operatorname{agg}\big( \mset{ r_0^H(w)| \ w \in N(v) } \big) \Big)$
 	\end{itemize}	
 	Let $\varphi :V(G) \to V(H)$ be an isomorphism that respects $r_0^G$ and $r_0^H$:
 	\begin{equation}\label{eq:MessagePassingInvIsok0}
@@ -753,15 +734,15 @@ Note that the definition of message passing depends on the multiset of neighbors
 	\end{equation}
 	and the following equality of multisets (using again equation \ref{eq:MessagePassingInvIsok0}):
 	\begin{flalign}\label{eq:MultisetIsoEqualities}
-		\ldblbrace r_0^G (w)|\ w\in N(v) \rdblbrace 
-		&= \ldblbrace r_0^H (\varphi(w))|\ \varphi(w)\in N(\varphi(v)) \rdblbrace \nonumber\\
-		&=  \ldblbrace r_0^G (w^\prime)|\ w^\prime\in N(\varphi(v)) \rdblbrace 
+		\mset{ r_0^G (w)|\ w\in N(v) } 
+		&= \mset{ r_0^H (\varphi(w))|\ \varphi(w)\in N(\varphi(v)) } \nonumber\\
+		&=  \mset{ r_0^G (w^\prime)|\ w^\prime\in N(\varphi(v)) } 
 	\end{flalign}
 
 	Now it is:\begin{flalign*}
-		r_1^G(v) &= \text{upd}\Big( r_0^G(v), \ \text{agg}\big( \ldblbrace r_0^G(w)|\ w\in N(v)\rdblbrace \big) \Big) && \text{by definition}\\
-		&= \text{upd}\Big( r_0^H(\varphi(v)), \ \text{agg}\big( \ldblbrace r_0^G(w)|\ w\in N(v)\rdblbrace \big) \Big) && \text{using \ref{eq:MultisetIsoEqualities}}\\
-		&= \text{upd}\Big( r_0^H(\varphi(v)), \ \text{agg}\big( \ldblbrace r_0^H(w^\prime)|\ w^\prime\in N(\varphi(v))\rdblbrace \big) \Big) && \text{using \ref{eq:NeighborhoodsUnderIso}}\\
+		r_1^G(v) &= \operatorname{upd}\Big( r_0^G(v), \ \operatorname{agg}\big( \mset{ r_0^G(w)|\ w\in N(v)} \big) \Big) && \text{by definition}\\
+		&= \operatorname{upd}\Big( r_0^H(\varphi(v)), \ \operatorname{agg}\big( \mset{ r_0^G(w)|\ w\in N(v)} \big) \Big) && \text{using \ref{eq:MultisetIsoEqualities}}\\
+		&= \operatorname{upd}\Big( r_0^H(\varphi(v)), \ \operatorname{agg}\big( \mset{ r_0^H(w^\prime)|\ w^\prime\in N(\varphi(v))} \big) \Big) && \text{using \ref{eq:NeighborhoodsUnderIso}}\\
 		&= r_1^H(\varphi(v)) && \text{by definition}\\
 	\end{flalign*}
 	Now lets prove the statement for $k>1$.	%TODO: Prove message passing iso invaiance
@@ -778,7 +759,7 @@ Common choices for aggregator functions are: \begin{itemize}
 	\item means, sums, products, 
 	\item histograms,
 	\item hashes and
-	\item neural networks.
+	\item Neural Networks.
 \end{itemize}
 
 Lets consider these aggregator functions one by one.
@@ -789,14 +770,14 @@ Consider the \textbf{neighbor count aggregator}. Since the graph structure does 
 
 \subsubsection{Means, sums and products aggregator}
 
-One can also generalize the \textbf{means}, \textbf{sums} and \textbf{products aggregator} by defining a binary operation that is commutative and associative $\circ:\mathcal{X}\times \mathcal{X} \to \mathcal{X}$. For $X=\ldblbrace x_1,x_2,\dots,x_{|X|}\rdblbrace$
+One can also generalize the \textbf{means}, \textbf{sums} and \textbf{products aggregator} by defining a binary operation that is commutative and associative $\circ:\mathcal{X}\times \mathcal{X} \to \mathcal{X}$. For $X=\mset{ x_1,x_2,\dots,x_{|X|}}$
 \[ \bigcirc_{x\in X} x = x_1\circ x_2 \circ \dots \circ x_{|X|} \]
 is a well defined aggregator.
 
 \subsubsection{Histogram aggregator}
 
 Lets take a closer look at \textbf{histogram aggregators}. Let $\mathcal{X}$ be a set and $B_1, B_2,\dots, B_k\subseteq \mathcal{X}$ be bins. Then for $X\in \IN^{\mathcal{X}}$ and $B_i$ we can define
-\[ \text{count}_{B_i} (X) := |\ldblbrace x\in X| \ x\in B_i \rdblbrace| \]
+\[ \text{count}_{B_i} (X) := |\mset{ x\in X| \ x\in B_i }| \]
 and $\text{hist}_{B_1,\dots,B_k}:\mathcal{X}\to \IN^k$ as
 \[ \text{hist}_{B_1,\dots,B_k}(X) := \big( \text{count}_{B_1}(X),\dots, \text{count}_{B_k}(X) \big) \]
 Note that the histograms generalize multisets, since a multiset is a histogram where each bin contains a single object. One can also define \textbf{weighted versions} where one sums over weights of objects in a bin.
@@ -811,11 +792,11 @@ If such a function is injective it is called a \textbf{perfect hash function}. T
 
 \subsubsection{Neural network aggregator}
 
-We can use any neural network $f_{\phi}:\IN^{\IR^d}\to \IR^{d^\prime}$ that accepts a set of representations as input and produces an output. In the simplest case, one can use a Perceptron with indegree equal to the maximum degree of the graph times $d$. One has to be careful to have a permutation invariant function, though.
+We can use any Neural Network $f_{\phi}:\IN^{\IR^d}\to \IR^{d^\prime}$ that accepts a set of representations as input and produces an output. In the simplest case, one can use a Perceptron with indegree equal to the maximum degree of the graph times $d$. One has to be careful to have a permutation invariant function, though.
 
 \subsection{Update functions}
 
-The update function $\text{upd}:\mathcal{X}_k \times\mathcal{X}_k^\prime \to \mathcal{X}_{k+1}$ updates the representation of $v$ given its old representation and the aggregate of the neighbors. 
+The update function $\operatorname{upd}:\mathcal{X}_k \times\mathcal{X}_k^\prime \to \mathcal{X}_{k+1}$ updates the representation of $v$ given its old representation and the aggregate of the neighbors. 
 
 Again, in principle, one can use any function. It does not have to be commutative, and in fact it will likely lose information if it is, since it then no longer distinguishes between the representation of the current vertex and its neighborhood.
 
@@ -823,7 +804,7 @@ Standard update functions are:\begin{itemize}
 	\item weighted sums and products of the results (for numerical data)\\
 	($+_{\alpha, \beta}:\IR^d\times\IR^d\to \IR^d$ like $+_{\alpha, \beta}(x,y):= \alpha \cdot x + \beta\cdot y$ or\\
 	$\cdot_{\alpha}:\IR^d\times\IR^d\to \IR^d$ like $\cdot_{\alpha}(x,y):= \alpha\cdot x\cdot y$),
-	\item neural networks (trainable functions),
+	\item Neural Networks (trainable functions),
 	\item hash functions, 
 	\item \dots
 \end{itemize}
@@ -833,7 +814,7 @@ Standard update functions are:\begin{itemize}
 \begin{Definition}[Weisfeiler Lehman Label Propagation Scheme]{def:WeisfeilerLehmanLabelPropagationScheme}
 	The \textbf{Weisfeiler Lehman Label Propagation Scheme} is defined as
 	\begin{equation}\label{eq:WLLabellingScheme}
-		r_{k+1}^{\text{WL}}(v) = \#_k \Big( r_k^{\text{WL}}(v), \ \text{id}_k\big( \ldblbrace r_k^{\text{WL}}(w)|\ w\in N(v)\rdblbrace \big) \Big)
+		r_{k+1}^{\text{WL}}(v) = \#_k \Big( r_k^{\text{WL}}(v), \ \text{id}_k\big( \mset{ r_k^{\text{WL}}(w)|\ w\in N(v)} \big) \Big)
 	\end{equation}
 	Where \begin{itemize}
 		\item[] $r_0^{\text{WL}}:V(G) \to\mathcal{X}_0$ maps to a discrete space,
@@ -846,7 +827,7 @@ Recall, that by definition the hash values in iteration $k$ encode the $k$-hop n
 
 \begin{Theorem}[Isomorphy invariance of Weisfeiler and Lehman's vertex representation]{thm:WeisfeilerLehmanIsoInv}
 	Let $G, H$ be two graphs with vertex label functions $r_0^{\text{WL}, G}, r_0^{\text{WL}, H}$. If $G$ and $H$ are isomorphic (respecting $r_0^{\text{WL}, G}$, $r_0^{\text{WL}, H}$) then
-	\[ \forall k\ge 0:\qquad \ldblbrace r_k^{\text{WL}, G}(v)| \ v\in V(G)\rdblbrace =  \ldblbrace r_k^{\text{WL}, H}(v)| \ v\in V(H)\rdblbrace \]
+	\[ \forall k\ge 0:\qquad \mset{ r_k^{\text{WL}, G}(v)| \ v\in V(G)} =  \mset{ r_k^{\text{WL}, H}(v)| \ v\in V(H)} \]
 	This means the vertex representation can reduce the graph isomorphy to multiset equality.
 \end{Theorem}
 \begin{Proof}
@@ -864,14 +845,14 @@ Note however that the other direction is true. There are non-isomorphic graphs w
 	\label{fig:nonisographexamplewithidwl} %TODO: write LaTex
 \end{figure}
 
-This result allows us to test if two graphs $G$ and $H$ are not isomorphic. Therefore simply compute the multisets $\ldblbrace r_k^{\text{WL}, G}(v)| \ v\in V(G)\rdblbrace$ and $\ldblbrace r_k^{\text{WL}, H}(v)| \ v\in V(H)\rdblbrace$. If these multisets differ for any $0\le k\le \max\big( |V(G)|, \ |V(H)| \big)$ the graphs $G$ and $H$ are not isomorphic.
+This result allows us to test if two graphs $G$ and $H$ are not isomorphic. Therefore simply compute the multisets $\mset{ r_k^{\text{WL}, G}(v)| \ v\in V(G)}$ and $\mset{ r_k^{\text{WL}, H}(v)| \ v\in V(H)}$. If these multisets differ for any $0\le k\le \max\big( |V(G)|, \ |V(H)| \big)$ the graphs $G$ and $H$ are not isomorphic.
 
 Note that if the two multisets are identical, the graphs might be isomorphic or not!
 
 \subsubsection{Efficient computation of the WL labels}
 
 Recall the Weisfeiler Lehman labeling scheme presented in equation \ref{eq:WLLabellingScheme}:
-\[ r_{k+1}^{\text{WL}}(v) = \#_k \Big( r_k^{\text{WL}}(v), \ \text{id}_k\big( \ldblbrace r_k^{\text{WL}}(w)|\ w\in N(v)\rdblbrace \big) \Big) \]
+\[ r_{k+1}^{\text{WL}}(v) = \#_k \Big( r_k^{\text{WL}}(v), \ \text{id}_k\big( \mset{ r_k^{\text{WL}}(w)|\ w\in N(v)} \big) \Big) \]
 
 To compute it efficiently, we need a fast way to hash multisets $X$ from $\mathcal{X}$. Let $<$ be a total order on $\mathcal{X}$, then sorting all elements in $X$ according to $<$ returns a unique results. Thus we can compute a canonical string of symbols for each multiset. This would already be a perfect hash function.
 
@@ -883,11 +864,11 @@ With a canonical string of a neighbor label multiset, we can now build a lookup 
 
 \subsection{Message passing on GNNs}
 
-We would like to train a graph neural network to implement the message passing, i.a. compute the update and aggregation function, which we have seen already in equation \ref{eq:MessagePassing}
-\[ r_{k+1}(v) = \text{upd}_k\Big(r_k (v), \text{agg}_k\big( r_k(w)|\ w\in N(v) \big) \Big) \]
+We would like to train a GNN to implement the message passing, i.a. compute the update and aggregation function, which we have seen already in equation \ref{eq:MessagePassing}
+\[ r_{k+1}(v) = \operatorname{upd}_k\Big(r_k (v), \operatorname{agg}_k\big( r_k(w)|\ w\in N(v) \big) \Big) \]
 
-In its oldest form, a graph neural network layer is defined for all $v\in V(G)$ as
-\begin{equation}\label{eq:GNNLayer}
+In its oldest form, a GNN layer is defined for all $v\in V(G)$ as
+\begin{equation}\label{eq:GNNMessagePassing}
 	r_{k+1}(v) = \sigma\Big( W_k^{\text{self}} r_k(v) \;+\; W_k^{\text{neigh}} \sum_{w\in N(v)} r_k(w) + b_k \Big)
 \end{equation}
 where\begin{itemize}
@@ -902,8 +883,8 @@ Let use $\theta_k$ to denote \textit{trainable weights in iteration} $k$ of the 
 
 Lets identify the update and aggregator function. The latter is trivial (and ensures permutation invariance):
 \begin{itemize}
-	\item[] $\text{agg}_k \big( \ldblbrace r_k(w)| \ w\in N(v) \rdblbrace \big) = \ \sum\limits_{w\in N(v)} r_k(v)$	
-	\item[] $\text{upd}_k = W^{\text{self}}_k r_k(v) + W^{\text{neigh}}_k \text{agg}_k (\cdot) + b_{k+1}$
+	\item[] $\operatorname{agg}_k \big( \mset{r_k(w)| \ w\in N(v)} \big) = \ \sum\limits_{w\in N(v)} r_k(v)$	
+	\item[] $\operatorname{upd}_k = W^{\text{self}}_k r_k(v) + W^{\text{neigh}}_k \operatorname{agg}_k (\cdot) + b_{k+1}$
 \end{itemize}
 
 \paragraph{Example - Message Passing on a GNN}
@@ -968,30 +949,310 @@ To prevent this one may swap the sum aggregator with the \textit{mean aggregator
 
 Another variation is to use the \textit{symmetric normalization} aggregator:
 
-\[ \text{agg}_k(\cdot) = \sum_{w\in N(v)} \frac{ r_k(w) }{ \sqrt{ |N(v)|\ |N(w)| } } \]
+\[ \operatorname{agg}_k(\cdot) = \sum_{w\in N(v)} \frac{ r_k(w) }{ \sqrt{ |N(v)|\ |N(w)| } } \]
 
 \subsection{Message passing on GCNs}
 
-A very popular variant of GNNs are \textbf{Graph Convolutional Neural Networks} (\textbf{GCNs}). These use symmetric normalization and do not distinguish between representations of a vertex $v$ and its neighbors $w\in N(v)$:
+A very popular variant of GNNs are \textbf{Graph Convolutional Neural Networks} (\textbf{GCNs}). These use symmetric normalization and do not distinguish between representations of a vertex $v$ and its neighbors $w\in N(v)$. Thus by construction, they are likely to lose information:
 \begin{equation}\label{eq:GCNUpdate}
 	r_{k+1} (v)= \text{ReLU}\Big( W_k\ \sum_{w\in N(G)\cup\{v\}} \frac{r_k(w)}{ \sqrt{|N(v)|\ |N(w)|}} +b_k  \Big)
 \end{equation}
-Again, $W\in \IR^{d_k \times d_{k+1}}$ and $b\in \IR^{k+1}$ are trainable parameters.
+Again, $W\in \IR^{d_k \times d_{k+1}}$ and $b_k\in \IR^{d_{k+1}}$ are trainable parameters.
 
-%TODO: CONTINUE SLIDE 15 (56 of 147)
+Note that symmetric normalization (partially) inhibits to learn from the degree of a vertex.
+ 
+
+\subsection{Message passing on GINs}
+
+Another variant adds a multiple layer trainable Neural Network in each message passing step. These are called \textbf{Graph Isomorphism Networks} (\textbf{GINs}). Let $NN_{\theta_k}$ be a (multilayer) Neural Network (with trainable weights and element-wise non-linearities). Let $\epsilon_k\in \IR$ be a trainable weights. Then the update step of a GINs, using these parameters, can be described as:
+
+\begin{equation}\label{eq:GINUpdate}
+	r_{k+1}(v) = \operatorname{NN}_{\theta_k} \Big( (1+\epsilon_k) r_k(v) + \ \sum_{w\in N(v)} r_k(w)+ b_k \Big)
+\end{equation}
+
+There are a lot of freedoms when configuring GINs. Common hyper-parameters that can be learned are:\begin{itemize}
+	\item The number of layers in the MLP (often only one or two hidden layers).
+	\item The number of units per hidden layer (often 16 or 32 units).
+	\item The non-linearity function (often ReLU).
+\end{itemize}
+
+\subsection{Training GNNs}
+
+\subsubsection{Training GNNs for vertex classification}
+
+Assume that we are in a supervised vertex classification setting. Thus for each vertex $v\in V(G)$ we want to predict a discrete class $y(v)\in C$ for some finite set of classes $C=\{c_1,\dots, c_d\}$.
+
+We are given a finite set of vertices $V\subseteq V(G)$ with known labels $\{ y(v)|\ v\in V \}$.
+
+As usual we can use (stochastic) gradient descent, backpropagation and a differentiable loss function to train a suitable GNN. Neural Networks for classification tasks are often trained with the \textbf{negative log likelihood} loss functions of a \textbf{softmax classification}:
+\begin{equation}\label{eq:NegLogLikelihoodSoftmax}
+	L_{G,y}(h_\theta) = \sum_{v\in V} -\log\Big( \trn{\vv{y}(v)} \softmax\big(r(v)\big) \Big)
+\end{equation}
+where $\vv{y}(v) \in \one^d$ is a \textit{one-hot vector} encoding the class of $v$. That is for $y(v)=c_i$ have the $i$-th unit vector as the one-hot encoding $\vv{y}(v)=e_i$. $r(v)\in \IR^d$ is the (last hidden) representation of $v$.
+
+\begin{Definition}[Softmax function]{def:Softmax}
+	The \textbf{softmax function}
+	\[ \softmax( x )_i = \frac{\exp(x_i)}{\sum_{j=1}^{d}\exp(x_j)} \]
+	maps a $d$-dimensional vector $x\in\IR^d$ to a $d$-dimensional vector $\hat{y}$ with 
+	\[ \sum_{j=1}^{d} \hat{y}_i = 1 \]
+	Hence, the entries of the output $\hat{y}$ can be interpreted as probabilities to belong to a certain class of $d$ classes.
+	
+	In most cases, the dimension with the largest entry will be mapped to a value close to one - and the rest respectively close to zero (hence the name).
+\end{Definition}
+
+Recall that message passing Neural Networks compute some representation $r_k(v)\in \IR^d{d_k}$ for some $d_k$ - that is one representation for all $k$ iterations over all $d$ possible representation values. $d_k$ usually depends on the dimensionality of the input representation $r_0 :V(G) \to \IR^{d_0}$ and $d_k$ is not equal to the number of classes in the vertex classification problem $d=|C|$.
+
+Hence, we have to transform the message passing representations to representations that are suitable as input to the softmax function. To do this, we can use another Neural Network $NN_{\theta^\prime}:\IR^{d_k}\to\IR^d$ (with learnable parameters $\theta^\prime$). Then we can minimize the loss function
+
+\begin{equation}
+	L_{G,y}(h_{k, \theta, \theta^\prime}) = \sum_{v\in V} -\log\Big( \trn{\vv{y}(v)} \softmax\big( \operatorname{NN}_{\theta^\prime}(r(v))\big) \Big)
+\end{equation}
+
+Lets take a closer look at the parameters. It is:
+\[ v \stackrel{\text{given}}{\mapsto} r_0(v) \stackrel{\operatorname{upd}_{\theta_0}}{\mapsto} r_1(v) \stackrel{\operatorname{upd}_{\theta_1}}{\mapsto} \dots \stackrel{\operatorname{upd}_{\theta_{k-1}}}{\mapsto} r_k(v) \stackrel{\operatorname{NN}_{\theta^\prime}}{\mapsto} x(v) \stackrel{\softmax}{\mapsto} \hat{y}(v)  \]
+
+Since all functions between the representations $r_0(v)$ and $\hat{y}(v)$ are differentiable with respect to the parameters $\theta_0 , \dots, \theta_{k-1}, \theta^\prime$ ne can use the chain rule to automatically compute the gradient with respect to them:
+
+\begin{equation}\label{eq:NablaNegLogLikelihoodSoftmax}
+	\nabla L_{G,y}(h_{k,\theta_0,\dots,\theta_{k-1}, \theta^\prime}) = \nabla\Big( -\log \circ \softmax \circ \operatorname{NN}_{\theta^\prime} \circ \operatorname{upd}_{\theta_{k-1}} \circ \dots \circ \operatorname{upd}_{\theta_{0}}  \Big)
+\end{equation}
+
+The weights are updated according to some chosen strategy.
+
+\begin{algorithm}[H]
+	\caption{GNN - Vertex representation - ONE EPOCH} \label{alg:GNNVertexRep} 
+	\begin{tabbing}
+		\textbf{Output:} \= \kill
+		\textbf{Input:} \>a training set $V\subseteq V(G)$ with known classes $y:V\to C$,\\
+		\>learning rage $\gamma$,\\
+		\>a Neural Network to learn the vertex representation, given a softmax $\operatorname{NN}_{\theta^\prime}$,\\
+		\>number of message passing steps $k$ and\\
+		\>the initial vertex representation $r_0(v)$ for all vertices $v\in V(G)$.\\
+		\textbf{Output:} \>updated weights $\theta_0, \dots, \theta_{k-1}, \theta^\prime$.
+	\end{tabbing}	
+	\begin{algorithmic}[1]		
+		\State Run $k$ iterations of the GNN message passing for all  $v\in  V(G)$
+		\State Apply $\operatorname{NN}_{\theta^\prime}$ to the resulting representations $r_k(v)$ for all $v\in V(G)$
+		\State Compute $L_{G,y}(h_{k, \theta_0, \dots, \theta_{k-1}, \theta^\prime})$
+		\State Update the weights by setting
+		\[ (\theta_0, \dots, \theta_{k-1}, \theta^\prime) \ = \ (\theta_0, \dots, \theta_{k-1}, \theta^\prime) - \gamma \nabla L_{G, y}(h_{k,\theta_0, \dots, \theta_{k-1}, \theta^\prime}) \]
+	\end{algorithmic}
+	Note that this algorithm processes the whole training dataset at once (i.e. with gradient descent).
+\end{algorithm}
+
+Usually NNs are trained one mini-batch at a time (i.e. with stochastic gradient descent). To apply this to the GNN, we need to compute a (intermediate) representation for additional vertices (outside of the mini-batch).
+
+\begin{algorithm}[H]
+	\caption{GNN - Vertex representation - ONE EPOCH - Mini-batch} \label{alg:GNNVertexRepMiniBatch} 
+	\begin{tabbing}
+		\textbf{Output:} \= \kill
+		\textbf{Input:} \>a training \textbf{batch} $B\subseteq V\subseteq V(G)$ with known classes $y:V\to C$,\\
+		\>learning rage $\gamma$,\\
+		\>a Neural Network to learn the vertex representation, given a softmax $\operatorname{NN}_{\theta^\prime}$,\\
+		\>number of message passing steps $k$ and\\
+		\>the initial vertex representation $r_0(v)$ for all vertices $v\in V(G)$.\\
+		\textbf{Output:} \>updated weights $\theta_0, \dots, \theta_{k-1}, \theta^\prime$.
+	\end{tabbing}	
+	\begin{algorithmic}[1]		
+		\For{$i = 1,\dots, k$}
+			\State Compute the $i$-hop neighborhoods $N_i(v)$ for all $v\in B$
+		\EndFor
+		\For{$i = 1,\dots, k$}
+			\State Compute $r_i(w)$ for all $w\in N_{k-i}(v)$ for all $v\in B$
+		\EndFor
+		\State Apply $\operatorname{NN}_{\theta^\prime}$ to the resulting representations $r_k(v)$ for all $v\in B$
+		\State Compute $L_{G,y}(h_{k, \theta_0, \dots, \theta_{k-1}, \theta^\prime})$
+		\State Update the weights by setting
+		\[ (\theta_0, \dots, \theta_{k-1}, \theta^\prime) \ = \ (\theta_0, \dots, \theta_{k-1}, \theta^\prime) - \gamma \nabla L_{G, y}(h_{k,\theta_0, \dots, \theta_{k-1}, \theta^\prime}) \]
+	\end{algorithmic}
+	Note that this algorithm processes the whole training dataset at once (i.e. with gradient descent).
+\end{algorithm}
+
+Often, \textbf{weight sharing} is applied between GNN iterations. That is, we use the same functions $\operatorname{upd}$ and $\operatorname{agg}$ for each iteration $k$ of the message passing framework. This means that we set $\theta_0 = \theta_1 = \dots = \theta_{k-1}$ and update these hyper-parameters simultaneously from the different iterations during backpropagation. This can be beneficial but also a drawback for learning.
+
+One may ask, if these algorithms \ref{alg:GNNVertexRep} and \ref{alg:GNNVertexRepMiniBatch} follow the principle of \textit{supervised learning}.
+
+\begin{Definition}[Supervised learning]{def:SupervisedLearning}
+	The \textbf{supervised learning} principle is fulfilled, it the learning algorithm works based on the following in- and outputs:
+	\begin{tabbing}
+		\textbf{Output:} \= \kill
+		\textbf{Input:} \>a domain set $\mathcal{X}$,\\
+		\>a target domain set $\mathcal{Y}$,\\
+		\>a \textit{hypothesis class} $\mathcal{H}\subseteq \{ h|\ h:\mathcal{X}\to \mathcal{Y} \}$,\\
+		\>a finite set $X\subseteq \mathcal{X}$ and known target values $y(x)$ for all $x\in X$ and\\
+		\>a loss function $L_y:\mathcal{H}\to \IR$.\\		
+		\textbf{Output:} \>$\amin{h\in \mathcal{H}} L_y(h)$.
+	\end{tabbing}
+\end{Definition}
+
+Now lets apply this to the vertex representation learning task. We have:
+
+\begin{tabbing}
+	\textbf{Output:} \= \kill
+	\textbf{Input:} \>a graph $G$ with labeling functions $f_V$ and $f_E$,\\
+	\>a \textit{hypothesis class} $\mathcal{H}\subseteq \{ h|\ h: V(G)\to \mathcal{Y} \}$,\\
+	\>a finite set $V^\prime\subseteq V(G)$ and known target values $y(v)$ for all $v\in V^\prime$ and\\
+	\>a loss function $L_{G, y}:\mathcal{H}\to \IR$.\\
+%	\textbf{Output:} \>$\amin{h\in \mathcal{H}} L_y(h)$.
+\end{tabbing}
+
+Now consider the aggregation step in the message passing framework (\ref{eq:MessagePassing})
+\[ 
+r_{k+1}(v) = \operatorname{upd}_k \Big( r_k(v), \operatorname{agg}_k \big(r_k(w)|\ w\in N(v)\big) \Big)
+\]
+What happens when $w\in N(v)$ is not part of $V^\prime$? The update operation requires information from objects that are \textit{not} part of the training set in order to construct the (novel) vertex representations.
+On top of that, it is likely information from an object in the test or validation set. Thus actually, we require the full graph $G$ as input to our training. We cannot (by assumption) learn functions over vertices that were not part of $V(G)$ at the time of training. This is called \textbf{transductive learning} or \textbf{transductive inference}.
+We are trying to predict a target feature for a specifically known finite set of possible test instances $V(G)\backslash V^\prime$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Lecture 05 - 22.11.2021 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Transactional Graph Learning} %Learning graph representations for graph classes
+
+Up to now, we have tried to represent and learn from vertices in a single graph. In this chapter, we will consider learning functions over whole graphs. Since the term Graph Learning is overloaded with meaning, we will call this task \textbf{Transactional Graph Learning}. We will call individual graphs (\textbf{graph}) \textbf{transactions}. The objective of Transactional Graph Learning is to determine whether a graph belongs to a \textbf{graph class}, which is a (typically finite) set of graphs, or not.
+
+Examples of graph classes are:\begin{itemize}
+	\item Graphs
+	\item Forests (cycle free graphs)
+	\item Trees (connected and cycle free graphs)
+	\item Molecular graphs\\
+	(Graphs  that describe the structural formulas of valid molecules.)
+	\item 
+\end{itemize}
+
+Similar to definition \ref{def:GraphAttributesLabels} lets define additional data on graphs, their vertices and edges for a whole graph class.
+
+\begin{Definition}[Graph class attributes and labels] {def:GraphClassAttributesLabels}
+	Given a graph class $\mathcal{G}$ containing transactions (graphs).
+	The vertices and edges in these transactions may be labeled (or attributed).
+	
+	We formalize this using appropriate \textbf{feature spaces} $\mathcal{X}$, $\mathcal{X}^\prime$ and $\mathcal{X}^{\prime\prime}$:
+	\[ f_G: \mathcal{G} \to \mathcal{X},\qquad\qquad f_V: \bigcup_{G \in\mathcal{G}} V(G) \to \mathcal{X}^\prime,\qquad\qquad f_E:\bigcup_{G \in\mathcal{G}} E(G) \to \mathcal{X}^{\prime \prime}\]	
+\end{Definition}
+
+
+%TODO: Does the union here imply a countable set? If so, note that countability is not necessary!
+
+Note that in one learning task, we assume that all graphs in a graph class are labeled with values from the same feature spaces and these values are meaningfully comparable.
+
+\begin{Definition}[Transactional Graph Learning]{def:transactionalGraphLearning}
+	\begin{tabbing}
+		\textbf{Output:} \= \kill
+		\textbf{Input:} \>a class of graphs $\mathcal{G}$,\\
+		\>a target domain set $\mathcal{Y}$,\\
+		\>a \textit{hypothesis class} $\mathcal{H}\subseteq \{ h|\ h:\mathcal{G}\to \mathcal{Y} \}$,\\
+		\>a finite set $D\subseteq \mathcal{G}$ and known target values $y(G)$ for all $G\in D$ and\\
+		\>a loss function $L_y:\mathcal{H}\to \IR$.\\		
+		\textbf{Output:} \>$\amin{h\in \mathcal{H}} L_y(h)$.
+	\end{tabbing}
+	Note that in Transactional Graph Learning one usually assumes that \textbf{isomorphic graphs behave identically}.
+\end{Definition}
+
+\section{Multiset graph representations}
+
+In order to use standard machine learning algorithms, we are in need of a vector representation for graphs $r:\mathcal{G}\to\IR^d$. The main idea is to use the vertex representations that are discussed in the previous chapter the represent a whole graph $G$.
+
+A trivial example is the list of all occurring vertex degrees:
+\[ \vec{r}(G) := \bigoplus_{v\in V(G)} r(v)\qquad \in \IR^{d|V(G)|} \]
+Of course this is permutation sensitive. One may get around this by using multisets or sorted lists of vertex degrees. More challenging is the concern, that graphs can have different amounts of vertices. Hence this representation for $r_G \in \IR^{d|V(G)|}$ and $r_H \in \IR^{d|V(H)|}$ cannot be used to define a function $r:\mathcal{G}\to\IR^{d^\prime}$ with fixed $d^{\prime}$.
+
+Thus in general it is better to use a common feature space $\mathcal{X}$ and define the graph representation $r_{\text{MS}}$ as invariant multisets. We will use some vertex representation (e.g. vertex degree) $r:V(G) \to \mathcal{X}$ and set:
+\begin{equation}\label{eq:MultisetGraphRepresentation}
+	r_{\text{MS}}(G) = \mset{ r(v)|\ v\in V(G) }\qquad\in \IN^{|\mathcal{X}|}
+\end{equation}
+
+Note that $\mathcal{X}$ can have a practically infeasible number of elements (possibly infinitely many). Thus such \textbf{multiset graph representations} are useful for \textit{discrete} vertex representations. For example vertex degrees, vertex degeneracies, triangle counts, other individual graphlet counts or Weisfeiler-Lehman vertex labels.
+
+For all these examples, the multiset representation can be used for \textit{overlap based similarities}.
+
+We can represent multisets as vectors with one dimension per element of $\mathcal{X}$ that stores a count. When dealing with finite transactional graph databases, we know that
+\[ |\mset{r(v)|\ v\in V(G) }| = |V(G)| \]
+That means that there are always only finitely many entries that are nonzero for each graph $G\in\mathcal{G}$. That means we can use \textbf{sparse vectors} in practice to efficiently store the multiset representation $r_{\text{MS}}(G) \in \IN^{|\mathcal{X}|}$ in our finite memory, even if $|\mathcal{X}| = \infty$.
+
+\begin{Theorem}[Multiset graph representation respects isomorphism] {thm:MSGraphRepIso}
+	Let $G, H\in\mathcal{G}$ be two graphs and $\varphi:V(G)\to V(H)$ an isomorphism that respects their vertex features $f_V : \bigcup_{G\in \mathcal{G}} V(G) \to \mathcal{X}^\prime$. Let $r_{\text{MS}}:\mathcal{G} \to \IN^{\mathcal{X}^{\prime}}$ be a multiset graph representation of these features: 
+	\[ r_{\text{MS}}(G) = \mset{ f_V(v)|\ v\in V(G) } \]
+	
+	Then 
+	\[ r_{\text{MS}}(G) = r_{\text{MS}}(H) \]
+\end{Theorem}
+\begin{Proof}
+	Exercise. %TODO
+\end{Proof}
+
+\subsection{Histogram graph representations}
+
+Recall that we have earlier discussed \textit{histogram aggregators}. Let $\mathcal{X}$ be a set and $B_1,B_2,\dots, B_k\subseteq \mathcal{X}$ be bins. Then, for $X\in \IN^{\mathcal{X}}$ and $B_i$ we can define
+\[ \operatorname{count}_{B_i}(X) = |\mset{ x\in X| \ x\in B_i }| \]
+and a histogram as a mapping $\operatorname{hist}_{B_1,\dots,B_k}:\IN^{\mathcal{X}} \to \IN^k$ as
+\[ \operatorname{hist}_{B_1,\dots, B_k}(X) = \big( \operatorname{count}_{B_1}(X),\dots, \operatorname{count}_{B_k}(X) \big) \]
+
+Note that histograms generalize multisets in the sense that \textit{a multiset is a histogram where each bin contains a single object}. One can define a histogram aggregator that counts the occurrences of each individual object in (finite or countably infinite) $\mathcal{X}$. One can also define weighted versions where one sums over the weights of objects in a bin.
+
+Histograms can be seen as discrete distributions. During their definition one can influence the dimensionality of the resulting graph representation.
+
+\begin{Theorem}[Histogram graph representation respects multiset graph representations] {thm:MSGraphRepMSGraphRep}
+	Let $G, H\in\mathcal{G}$ be two graphs and $\varphi:V(G)\to V(H)$ an isomorphism that respects their vertex features $f_V : \bigcup_{G\in \mathcal{G}} V(G) \to \mathcal{X}^\prime$. Let $r_{\text{MS}}:\mathcal{G} \to \IN^{\mathcal{X}^{\prime}}$ be a multiset graph representation of these features: 
+	\[ r_{\text{MS}}(G) = \mset{ f_V(v)|\ v\in V(G) } \]
+	Let $\operatorname{hist}_{B_1,\dots, B_k}:\IN^{\mathcal{X}^\prime}\to\IN^{k}$ be a histogram representation:
+	\[ \operatorname{hist}_{B_1,\dots, B_k}(X) = \big( \operatorname{count}_{B_1}(X),\dots, \operatorname{count}_{B_k}(X) \big) \]
+	
+	Then 
+	\[ \operatorname{hist}_{B_1,\dots, B_k}\big(r_{\text{MS}}(G)\big) = \operatorname{hist}_{B_1,\dots, B_k}\big(r_{\text{MS}}(H)\big) \]
+\end{Theorem}
+\begin{Proof}
+	From theorem \ref{thm:MSGraphRepIso}, we know that the multiset representations of isomorphic graphs are identical. Since $\operatorname{hist}_{B_1,\dots, B_k}$ is a function, we know that it hence must map the identical images of $G$ and $H$ to the same value:
+	\[ r_{\text{MS}}(G) = r_{\text{MS}}(H) \]
+\end{Proof}
+
+Note that isomorphism respects the original labeling. Hence, graphs with different original label multisets can never be isomorphic. One may need to take extra care with respect to original labels in order to not have the representation denote an isomorphism where there is no one to be found.
+
+\section{GNNs for Transactional Graph Learning}
+
+Given a set of graphs for training, we can extend our neural network from
+computing vertex representations to graph representations. After a fixed number of message passing layers to compute vertex representations,we add a final aggregator layer that aggregates all vertex representations in the graph.
+Conceptually, for the last step we add a \enquote{hypervertex} that is connected to all vertices in the graph and aggregate over its neighbors and then update. The resulting \textbf{hypervertex representation} becomes the graph representation.
+
+\begin{algorithm}[H]
+	\caption{GNN - Transactional Graph Learning - ONE EPOCH} \label{alg:GNNTransactionalGraphLearning} 
+	\begin{tabbing}
+		\textbf{Output:} \= \kill
+		\textbf{Input:} \>a training set $D \subseteq \mathcal{G}$ with known classes $y:D\to C$,\\
+		\>learning rage $\gamma$,\\
+		\>a Neural Network to learn the graph representation, given a softmax $\operatorname{NN}_{\theta^\prime}$,\\
+		\>number of message passing steps $k$ and\\
+		\>the initial vertex representation $r_0(v)$ for all vertices $v\in V(G)$.\\
+		\textbf{Output:} \>updated weights $\theta_0, \dots, \theta_{k-1}, \theta_{\text{graph}}, \theta^\prime$.
+	\end{tabbing}	
+	\begin{algorithmic}[1]		
+		\For{$G\in D$}
+			\State Run $k$ iterations of your GNN message passing for all $v\in V(G)$
+			\State Aggregate the vertex representations of all vertices in $G$
+			\State Update the result to obtain a graph representation $r_{\text{graph}}(G)$
+		\EndFor
+		\State Apply $\operatorname{NN}_{\theta^\prime}$ to the resulting representations $r_{\text{graph}}(G)$ for all $G\in \mathcal{G}$
+		\State Compute $L_{y}(h_{k, \theta_0, \dots, \theta_{k-1}, \theta_{\text{graph}}, \theta^\prime})$
+		\State Update the weights by setting
+		\[ (\theta_0, \dots, \theta_{k-1}, \theta^\prime) \ = \ (\theta_0, \dots, \theta_{k-1}, \theta_{\text{graph}}, \theta^\prime) - \gamma \nabla L_{G, y}(h_{k,\theta_0, \dots, \theta_{k-1}, \theta_{\text{graph}}, \theta^\prime}) \]
+	\end{algorithmic}
+\end{algorithm}
+
+\section{Fast Forward Computation of Message Passing GNNs}
+
+In the previous lectures (equation \ref{eq:GNNMessagePassing}), we have formulated the message passing framework on a per vertex basis. If we have to compute all vertex representations, anyway, we can reformulate the message passing NN using \textit{matrix vector operations} as follows:
+
+\begin{equation}{eq:GNNMessagePassingFastForward}
+	R_{k+1} = \sigma\Big( R_k W_k^{\text{self}} + A_G R_k R_k W_k^{\text{neigh}} + b_k \Big)
+\end{equation}
+Again $W_k^{\text{self}}, W_k^{\text{neigh}}\in\IR^{d_k \times d_{k+1}}$ and $b\in\IR^{d_{k+1}}$ are trainable weights (matrices). $A_G$ is a (sparse) adjacency matrix of $G$ and $R_k \in \IR^{|V(G)|\times d_k}$ is a row matrix of vertex representations.
 
 
 
 \chapter{END >>>> FURTHER ANNOUNCED TOPICS}
 \section{Link prediction}
-
-
-
 \section{Graph classification, regression and clustering in transactional graph databases}
-
-
 \chapter{Feature Extraction and Graph Mining}
-
 In this chapter we focus on extracting graph representations following a fixed process. Therefore we discuss several pattern (or feature) classes and focus on the following questions:
 \begin{itemize}
 	\item What kind of features are there (e.g. local and global)?
@@ -1000,35 +1261,12 @@ In this chapter we focus on extracting graph representations following a fixed p
 	\item How powerful are graph representations in terms of distinguishing inputs?
 	\item How do we evaluate their quality?
 \end{itemize}
-
 \chapter{Learning on Graphs and Graph Kernels}
-
 In this chapter we discuss learning with (implicit) graph representations. Therefore we introduce machine learning models specific to the task of classifying graphs.
-
 \section{Support Vector Machine (SVM)}
 \section{Expressive power of machine learning models}
 \section{Kernel of special interest: Weisfeiler-Lehman kernel}
-
-\chapter{Graph Neural Networks (GNNs)}
-
-In this chapter we will introduce the learning of representations of graphs. We discuss how neural networks can be used to learn graph representations and to subsequently perform machine learning tasks.
-
 \section{Relationship to Weisfeiler-Lehman method}
-\section{Structure of GNNs}
-\section{Expressive power of GNNs}
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% Lecture 04 - dd.mm.2021 %%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% Lecture 05 - dd.mm.2021 %%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Lecture 06 - dd.mm.2021 %%%%
