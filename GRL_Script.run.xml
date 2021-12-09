@@ -79,7 +79,7 @@
       <file>GRL_Script.bcf</file>
     </requires>
     <requires type="editable">
-      <file>BibliographyBiomedicalDataScAndAI.bib</file>
+      <file>BibliographyGRL.bib</file>
     </requires>
   </external>
 </requests>

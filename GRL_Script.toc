@@ -18,17 +18,17 @@
 \contentsline {section}{\numberline {1.3}Distance based vertex representations}{23}{section.1.3}
 \contentsline {subsection}{\numberline {1.3.1}Centrality measures with distances}{23}{subsection.1.3.1}
 \contentsline {subsection}{\numberline {1.3.2}Centrality measures without distances}{26}{subsection.1.3.2}
-\contentsline {subsubsection}{Degeneracy}{27}{section*.15}
+\contentsline {subsubsection}{Degeneracy}{26}{section*.15}
 \contentsline {paragraph}{Proof:}{28}{section*.17}
-\contentsline {section}{\numberline {1.4}Message passing}{30}{section.1.4}
+\contentsline {section}{\numberline {1.4}Message passing}{29}{section.1.4}
 \contentsline {paragraph}{Proof:}{31}{section*.18}
 \contentsline {subsection}{\numberline {1.4.1}Aggregator functions}{32}{subsection.1.4.1}
 \contentsline {subsubsection}{Neighbor count aggregator}{32}{section*.19}
-\contentsline {subsubsection}{Means, sums and products aggregator}{33}{section*.20}
+\contentsline {subsubsection}{Means, sums and products aggregator}{32}{section*.20}
 \contentsline {subsubsection}{Histogram aggregator}{33}{section*.21}
 \contentsline {subsubsection}{Hash aggregator}{33}{section*.22}
 \contentsline {subsubsection}{Neural network aggregator}{33}{section*.23}
-\contentsline {subsection}{\numberline {1.4.2}Update functions}{34}{subsection.1.4.2}
+\contentsline {subsection}{\numberline {1.4.2}Update functions}{33}{subsection.1.4.2}
 \contentsline {subsection}{\numberline {1.4.3}Weisfeiler Lehman Relabeling Algorithm}{34}{subsection.1.4.3}
 \contentsline {paragraph}{Proof:}{35}{section*.24}
 \contentsline {subsubsection}{Efficient computation of the WL labels}{36}{section*.26}
@@ -37,25 +37,28 @@
 \contentsline {subsection}{\numberline {1.4.5}Message passing on GCNs}{39}{subsection.1.4.5}
 \contentsline {subsection}{\numberline {1.4.6}Message passing on GINs}{40}{subsection.1.4.6}
 \contentsline {subsection}{\numberline {1.4.7}Training GNNs}{40}{subsection.1.4.7}
-\contentsline {subsubsection}{Training GNNs for vertex classification}{40}{section*.29}
+\contentsline {subsubsection}{Training GNNs for vertex classification}{40}{section*.30}
 \contentsline {chapter}{\numberline {2}Transactional Graph Learning}{47}{chapter.2}
 \contentsline {section}{\numberline {2.1}Multiset graph representations}{48}{section.2.1}
-\contentsline {paragraph}{Proof:}{49}{section*.30}
+\contentsline {paragraph}{Proof:}{49}{section*.31}
 \contentsline {subsection}{\numberline {2.1.1}Histogram graph representations}{50}{subsection.2.1.1}
-\contentsline {paragraph}{Proof:}{50}{section*.31}
+\contentsline {paragraph}{Proof:}{50}{section*.32}
 \contentsline {section}{\numberline {2.2}GNNs for Transactional Graph Learning}{51}{section.2.2}
 \contentsline {section}{\numberline {2.3}Fast Forward Computation of Message Passing GNNs}{52}{section.2.3}
-\contentsline {chapter}{\numberline {3}END >>>> FURTHER ANNOUNCED TOPICS}{53}{chapter.3}
-\contentsline {section}{\numberline {3.1}Link prediction}{53}{section.3.1}
-\contentsline {section}{\numberline {3.2}Graph classification, regression and clustering in transactional graph databases}{53}{section.3.2}
-\contentsline {chapter}{\numberline {4}Feature Extraction and Graph Mining}{55}{chapter.4}
-\contentsline {chapter}{\numberline {5}Learning on Graphs and Graph Kernels}{57}{chapter.5}
-\contentsline {section}{\numberline {5.1}Support Vector Machine (SVM)}{57}{section.5.1}
-\contentsline {section}{\numberline {5.2}Expressive power of machine learning models}{57}{section.5.2}
-\contentsline {section}{\numberline {5.3}Kernel of special interest: Weisfeiler-Lehman kernel}{57}{section.5.3}
-\contentsline {section}{\numberline {5.4}Relationship to Weisfeiler-Lehman method}{57}{section.5.4}
-\contentsline {chapter}{\numberline {6}Exercises}{59}{chapter.6}
-\contentsline {section}{\numberline {6.1}Sheet 0 - Python}{59}{section.6.1}
-\contentsline {section}{\numberline {6.2}Sheet 1}{60}{section.6.2}
-\contentsline {subsection}{\numberline {6.2.1}Assignment 1a - Bias of an estimator}{60}{subsection.6.2.1}
-\contentsline {paragraph}{Solution:}{60}{section*.32}
+\contentsline {section}{\numberline {2.4}Complete representations}{53}{section.2.4}
+\contentsline {paragraph}{Example of a complete representation}{54}{section*.34}
+\contentsline {paragraph}{Proof:}{54}{section*.35}
+\contentsline {paragraph}{Proof:}{55}{section*.36}
+\contentsline {section}{\numberline {2.5}Expressive power of GNNs}{55}{section.2.5}
+\contentsline {paragraph}{Proof:}{56}{section*.37}
+\contentsline {paragraph}{Proof:}{57}{section*.38}
+\contentsline {paragraph}{Induction start}{57}{section*.39}
+\contentsline {paragraph}{Induction step}{57}{section*.40}
+\contentsline {paragraph}{Proof:}{59}{section*.41}
+\contentsline {subsection}{\numberline {2.5.1}The GIN theorem}{59}{subsection.2.5.1}
+\contentsline {chapter}{\numberline {3}GOTO END}{61}{chapter.3}
+\contentsline {chapter}{\numberline {4}Exercises}{63}{chapter.4}
+\contentsline {section}{\numberline {4.1}Sheet 0 - Python}{63}{section.4.1}
+\contentsline {section}{\numberline {4.2}Sheet 1}{64}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Assignment 1a - Bias of an estimator}{64}{subsection.4.2.1}
+\contentsline {paragraph}{Solution:}{64}{section*.42}

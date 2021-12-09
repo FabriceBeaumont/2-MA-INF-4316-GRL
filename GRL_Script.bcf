@@ -1920,9 +1920,30 @@
   <!-- CITATION DATA -->
   <!-- SECTION 0 -->
   <bcf:bibdata section="0">
-    <bcf:datasource type="file" datatype="bibtex">BibliographyBiomedicalDataScAndAI.bib</bcf:datasource>
+    <bcf:datasource type="file" datatype="bibtex">BibliographyGRL.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
+    <bcf:citekey order="1">errica2019fair</bcf:citekey>
+    <bcf:citekey order="1">schulz2019necessity</bcf:citekey>
+    <bcf:citekey order="1">kriege2020survey</bcf:citekey>
+    <bcf:citekey order="1">borgwardt2020graph</bcf:citekey>
+    <bcf:citekey order="2">watts1998collective</bcf:citekey>
+    <bcf:citekey order="2">holland1971transitivity</bcf:citekey>
+    <bcf:citekey order="3">shervashidze2009efficient</bcf:citekey>
+    <bcf:citekey order="4">kalofolias2021susan</bcf:citekey>
+    <bcf:citekey order="5">kalofolias2021susan</bcf:citekey>
+    <bcf:citekey order="6">matula1983smallest</bcf:citekey>
+    <bcf:citekey order="7">weisfeiler1968reduction</bcf:citekey>
+    <bcf:citekey order="8">scarselli2008graph</bcf:citekey>
+    <bcf:citekey order="9">kipf2016semi</bcf:citekey>
+    <bcf:citekey order="10">xu2018powerful</bcf:citekey>
+    <bcf:citekey order="11">babai2016graph</bcf:citekey>
+    <bcf:citekey order="12">babai2019canonical</bcf:citekey>
+    <bcf:citekey order="13">chi2005frequent</bcf:citekey>
+    <bcf:citekey order="14">cai1992optimal</bcf:citekey>
+    <bcf:citekey order="15">xu2018powerful</bcf:citekey>
+    <bcf:citekey order="16">hornik1989multilayer</bcf:citekey>
+    <bcf:citekey order="17">xu2018powerful</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="ynt">
@@ -1951,4 +1972,13 @@
     </bcf:sort>
   </bcf:sortingtemplate>
   <!-- DATALISTS -->
+  <bcf:datalist section="0"
+                name="ynt/global//global/global"
+                type="entry"
+                sortingtemplatename="ynt"
+                sortingnamekeytemplatename="global"
+                labelprefix=""
+                uniquenametemplatename="global"
+                labelalphanametemplatename="global">
+  </bcf:datalist>
 </bcf:controlfile>

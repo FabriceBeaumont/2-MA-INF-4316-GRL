@@ -21,16 +21,11 @@
 \BOOKMARK [2][-]{subsection.2.1.1}{Histogram graph representations}{section.2.1}% 21
 \BOOKMARK [1][-]{section.2.2}{GNNs for Transactional Graph Learning}{chapter.2}% 22
 \BOOKMARK [1][-]{section.2.3}{Fast Forward Computation of Message Passing GNNs}{chapter.2}% 23
-\BOOKMARK [0][-]{chapter.3}{END >>>> FURTHER ANNOUNCED TOPICS}{}% 24
-\BOOKMARK [1][-]{section.3.1}{Link prediction}{chapter.3}% 25
-\BOOKMARK [1][-]{section.3.2}{Graph classification, regression and clustering in transactional graph databases}{chapter.3}% 26
-\BOOKMARK [0][-]{chapter.4}{Feature Extraction and Graph Mining}{}% 27
-\BOOKMARK [0][-]{chapter.5}{Learning on Graphs and Graph Kernels}{}% 28
-\BOOKMARK [1][-]{section.5.1}{Support Vector Machine \(SVM\)}{chapter.5}% 29
-\BOOKMARK [1][-]{section.5.2}{Expressive power of machine learning models}{chapter.5}% 30
-\BOOKMARK [1][-]{section.5.3}{Kernel of special interest: Weisfeiler-Lehman kernel}{chapter.5}% 31
-\BOOKMARK [1][-]{section.5.4}{Relationship to Weisfeiler-Lehman method}{chapter.5}% 32
-\BOOKMARK [0][-]{chapter.6}{Exercises}{}% 33
-\BOOKMARK [1][-]{section.6.1}{Sheet 0 - Python}{chapter.6}% 34
-\BOOKMARK [1][-]{section.6.2}{Sheet 1}{chapter.6}% 35
-\BOOKMARK [2][-]{subsection.6.2.1}{Assignment 1a - Bias of an estimator}{section.6.2}% 36
+\BOOKMARK [1][-]{section.2.4}{Complete representations}{chapter.2}% 24
+\BOOKMARK [1][-]{section.2.5}{Expressive power of GNNs}{chapter.2}% 25
+\BOOKMARK [2][-]{subsection.2.5.1}{The GIN theorem}{section.2.5}% 26
+\BOOKMARK [0][-]{chapter.3}{GOTO END}{}% 27
+\BOOKMARK [0][-]{chapter.4}{Exercises}{}% 28
+\BOOKMARK [1][-]{section.4.1}{Sheet 0 - Python}{chapter.4}% 29
+\BOOKMARK [1][-]{section.4.2}{Sheet 1}{chapter.4}% 30
+\BOOKMARK [2][-]{subsection.4.2.1}{Assignment 1a - Bias of an estimator}{section.4.2}% 31

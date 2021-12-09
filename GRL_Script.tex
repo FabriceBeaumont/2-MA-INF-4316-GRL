@@ -1,4 +1,5 @@
 \input{../../../Skript_praeambel.tex}
+\addbibresource{BibliographyGRL.bib}
 
 % !TeX spellcheck = en_US 
 
@@ -15,6 +16,9 @@ Rheinische Friedrich-Wilhelms-Universität Bonn}
 %\listoffigures
 
 %----------------------------------------------------------
+
+% Lec6 - p.44/52 - Left over \subset in the first line
+% Lec7 - p. ...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Lecture 00 - 11.10.2021 %%%%
@@ -69,12 +73,14 @@ Another approach to make traditional machine learning approaches applicable to g
 It is highly non-trivial to determine which information crucial for a specific learning task shall be represented in which way in the graph representation.
 
 \paragraph{Example - Vertex classification:} Consider the graph depicted in Figure \ref{fig:vertexclassificationexample} and the task to reason about the color of unknown vertices by looking at training data.
+
 \begin{figure}[H] %TODO: Is this image TeXed? Lecture 0 Slide 30
 	\centering
 	\includegraphics[width=0.4\linewidth]{images/VertexClassificationExample}
 	\caption{Example of a graph with colors as vertex features.}
 	\label{fig:vertexclassificationexample}
 \end{figure}
+
 A closer look reveals that, in this example, the color of a vertex corresponds to its degree. Thus $\text{deg}(v)$ may be a simple representation of each vertex $v$.
 
 \paragraph{Example - Graph classification:} Consider the graph depicted in Figure \ref{fig:graphclassificationexample} and the task to predict the class of an unclassified graph (e.g. the gray one in the figure).
@@ -205,7 +211,7 @@ Cross validation can be used to compare different hypothesis. If there is a stat
 
 \subsection{Baselines for graph learning}
 
-Interestingly, some baseline methods, which do not include specific graph structures may perform well, even better than GNNs on some graph datasets. In other words, improvements that do not clearly outperform structure-agnostic competitors should be viewed with moderation.
+Interestingly, some baseline methods, which do not include specific graph structures may perform well, even better than GNNs on some graph datasets. In other words, improvements that do not clearly outperform structure-agnostic competitors should be viewed with moderation\cite{errica2019fair,schulz2019necessity,kriege2020survey,borgwardt2020graph}.
 
 Note that whenever information about individual vertices is available, one should consider using it extensively. In many cases, it is more valuable for the task at hand, than the actual graph structure that combines these. 
 
@@ -266,7 +272,7 @@ This subgraph $G[N(v)]$ can have at most
 \[ \frac{\delta(v)\big( \delta(v)-1 \big)}{2} \]
 edges, since every of the $\delta(v)$ neighbors of $v$ can have at most one edge, to all other $\delta(v)$ neighbors in $G[N(v)]$. Notice, not to count every edge twice in this argumentation. If there are exactly this many edges (without loops), the subgraph is \textit{fully connected}.
 
-\begin{Definition}[Neighborhood density]{def:NeighborhoodDensity}
+\begin{Definition}[Neighborhood density\cite{watts1998collective,holland1971transitivity}] {def:NeighborhoodDensity}
 	The \textbf{density} of a vertex's neighborhood $v$ is defined as the ratio of all existing edges and all possible edges (in a fully connected neighborhood):
 	\[ c(v) := \frac{2 \big|E\big( G[N(v)] \big)\big|}{ \delta(v) \big(\delta(v)-1\big) } \]
 \end{Definition}
@@ -368,7 +374,7 @@ Since a lot of graph structured data can be considered Big Data (w.r.t. size; no
 %%%%% Lecture 02 - 25.10.2021 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{Theorem}[Runtime bound on the Incident Induced Graphlets Count Problem]{thm:RuntimeBoundIncIndGraphletsCountPb}
+\begin{Theorem}[Runtime bound on the Incident Induced Graphlets Count Problem\cite{shervashidze2009efficient}]{thm:RuntimeBoundIncIndGraphletsCountPb}
 	Let $G$ be a bounded degree graph and let $d$ denote the maximum degree in $G$. 
 	
 	If all graphlet structures size $k\in \{ 3, 4, 5 \}$ are known (precomputed), then all $v$-incident graphlets of $G$ with size $k\in \{ 3, 4, 5 \}$ can be enumerated in $\mathcal{O}(nd^{k-1})$ time.
@@ -535,13 +541,66 @@ and space complexity $\Theta(n^2)$. For many (big) real world graphs this is inf
 	That is the ratio of the distance of all vertices to $v$, if $v$ would be connected to every vertex - and the actual accumulated distances to all vertices.
 \end{Definition}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\linewidth]{images/closenessCentrality}
-	\caption{}
-	\label{fig:closenesscentrality} %TODO: TeX
-\end{figure}
+\begin{minipage}{\textwidth}
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[x=2cm,y=2cm] 
+		\begin{scope}[scale=1]
+		
+		\tikzstyle{mycircle}=[circle,
+		draw=black,
+		fill=gray,
+		fill opacity = 0.3,
+		text opacity=1,
+		inner sep=0pt,
+		minimum size=7mm,
+		font=\small
+		]
+		\tikzstyle{mycirclewhite}=[circle,
+		draw=black,
+		text opacity=1,
+		inner sep=0pt,
+		minimum size=7mm,
+		font=\small
+		]
+		
+		\coordinate (px1) at (1, 3.5);
+		
+		\coordinate (px2) at (0, 3);
+		\coordinate (px3) at (2, 3);
+		\coordinate (px4) at (1, 2);
+		
+		\coordinate (px5) at (0, 1.5);
+		\coordinate (px6) at (2, 1.5);
+		
+		\coordinate (t1) at (2.5, 1.5);
+		\coordinate (t2) at (2.5, 2);
+		
+		
+		\node[mycircle] (x1) at (px1) {$w$};	
+		\node[mycircle] (x2) at (px2) {$w$};
+		\node[mycircle] (x3) at (px3) {$w$};	
+		\node[mycirclewhite] (x4) at (px4) {$v$};
+		\node[mycircle] (x5) at (px5) {$w$};	
+		\node[mycircle] (x6) at (px6) {$w$};
+		
+		
+		\draw[-] (x1) -- (x4);
+		\draw[-] (x2) -- (x4);
+		\draw[-] (x3) -- (x4);
+		\draw[-] (x5) -- (x4);
+		\draw[-] (x6) -- (x4);
+		
 
+		\draw[] (t1) node[right] {$c(v) = \frac{5}{5} = 1$};
+		\draw[] (t2) node[right] {$c(w) = \frac{5}{9} = 0.5$};
+		
+		\end{scope}
+		\end{tikzpicture}
+	\end{figure}
+	\captionof{figure}{Example for the closeness centrality measure}
+	\label{fig:closenesscentrality2}
+\end{minipage}
 
 Note that this closeness centrality is a well-known centrality measure. A scaled version of it is used for example in the k-means cluster reassignment step. There one is optimizing with respect to the accumulated pairwise Euclidean distance:
 \[ \amin{x\in \IR^2}\sum_{y\in C_i} L_2^2(x,y) \ = \amax{x\in \IR^2} \frac{1}{ \sum_{y\in C_i} L_2^2(x,y) } \ = \amax{x\in \IR^2} \frac{n-1}{ \sum_{y\in C_i} L_2^2(x,y) }\]
@@ -556,12 +615,82 @@ Note that this closeness centrality is a well-known centrality measure. A scaled
 	Thus $C_{\text{hc}}$ is well defined on disconnected graphs and again zero if there is only one vertex in $G$.
 \end{Definition}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\linewidth]{images/harmonicClosenessCentrality}
-	\caption{}
-	\label{fig:harmonicclosenesscentrality} %TODO: TeX
-\end{figure}
+\begin{minipage}{\textwidth}
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[x=2cm,y=2cm] 
+		\begin{scope}[scale=1]
+		
+		\tikzstyle{mycircle}=[circle,
+		draw=black,
+		fill=gray,
+		fill opacity = 0.3,
+		text opacity=1,
+		inner sep=0pt,
+		minimum size=7mm,
+		font=\small
+		]
+		\tikzstyle{mycirclewhite}=[circle,
+		draw=black,
+		text opacity=1,
+		inner sep=0pt,
+		minimum size=7mm,
+		font=\small
+		]
+		
+		\coordinate (px1) at (1, 3.5);		
+		\coordinate (px2) at (0, 3);
+		\coordinate (px3) at (2, 3);
+		\coordinate (px4) at (1, 2);		
+		\coordinate (px5) at (0, 1.5);
+		\coordinate (px6) at (2, 1.5);
+		
+		\coordinate (t1) at (0.5, 1);
+		\coordinate (t2) at (2.5, 1);
+		
+		\node[mycircle] (x1) at (px1) {$w$};	
+		\node[mycircle] (x2) at (px2) {$w$};
+		\node[mycircle] (x3) at (px3) {$w$};	
+		\node[mycirclewhite] (x4) at (px4) {$v$};
+		\node[mycircle] (x5) at (px5) {$w$};	
+		\node[mycircle] (x6) at (px6) {$w$};
+				
+		\draw[-] (x1) -- (x4);
+		\draw[-] (x2) -- (x4);
+		\draw[-] (x3) -- (x4);
+		\draw[-] (x5) -- (x4);
+		\draw[-] (x6) -- (x4);
+		
+		
+		\coordinate (py1) at (4, 3.5);		
+		\coordinate (py2) at (3, 3);
+		\coordinate (py3) at (5, 3);
+		\coordinate (py4) at (4, 2);		
+		\coordinate (py5) at (3, 1.5);
+		\coordinate (py6) at (5, 1.5);		
+		
+		\node[mycircle] (y1) at (py1) {$w$};	
+		\node[mycircle] (y2) at (py2) {$w$};
+		\node[mycircle] (y3) at (py3) {$w$};	
+		\node[mycirclewhite] (y4) at (py4) {$v$};
+		\node[mycircle] (y5) at (py5) {$w$};	
+		\node[mycircle] (y6) at (py6) {$w$};
+		
+		\draw[-] (y1) -- (y4);
+		\draw[-] (y2) -- (y4);
+		\draw[-] (y3) -- (y4);
+		\draw[-] (y5) -- (y4);
+		\draw[-] (y6) -- (y4);
+				
+		\draw[] (t1) node[right] {$c(v) = \frac{1}{9}*4\frac{1}{1} = \frac{4}{9}$};
+		\draw[] (t2) node[right] {$c(w) = \frac{1}{9}*\Big( \frac{1}{1}+ 3 \frac{1}{2} \Big) = \frac{5}{18}$};
+		
+		\end{scope}
+		\end{tikzpicture}
+	\end{figure}
+	\captionof{figure}{Example for the closeness centrality measure}
+	\label{fig:closenesscentrality}
+\end{minipage}
 
 Unfortunately, no algorithm is known to compute the closeness centrality for all vertices faster than by trivially computing all-pairs-shortest paths. This is possible in $\mathcal{O}(n^2 \log(n)+nm)$ in the weighted case.
 
@@ -603,7 +732,7 @@ Another way of defining centrality is via \textit{density}. Intuitively, it woul
 \end{Definition}
 
 \begin{Definition}[$k$-core component of a graph]{def:kCoreComponent}
-	A $k$\textbf{-core component} $X$ of a graph $G$ is an inclusion-wise maximal connected induced subgraph $G[X]$ such that each vertex $x\in X$ has at least degree $k$ in the induces subgraph
+	A $k$\textbf{-core component} of a graph $G$ is an inclusion-wise maximal connected induced subgraph $G[X]$ such that each vertex $x\in X$ has at least degree $k$ in the induces subgraph
 	\[ \delta_{G[X]}(x) \ge k \]
 \end{Definition}
 
@@ -617,8 +746,8 @@ Another way of defining centrality is via \textit{density}. Intuitively, it woul
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\linewidth]{images/degeneracyExample}
-	\caption{Example graph with all $k$-cores and thus degeneracies visualized.}
+	\includegraphics[width=\linewidth]{images/degeneracyExample}
+	\caption{Example graph with all $k$-cores and thus degeneracies visualized\cite{kalofolias2021susan}.}
 	\label{fig:degeneracyexample} %TODO: Get code from pascal
 \end{figure}
 
@@ -649,7 +778,7 @@ Another way of defining centrality is via \textit{density}. Intuitively, it woul
 \end{algorithm}
 
 
-\begin{Theorem}[Complexity of degeneracy]{thm:ComplexityOfDegeneracy}
+\begin{Theorem}[Complexity of degeneracy\cite{matula1983smallest}]{thm:ComplexityOfDegeneracy}
 	Let $G$ be a graph. The degeneracy of all vertices $v\in V(G)$ can be computed in linear time.
 \end{Theorem}
 \begin{Proof}
@@ -825,7 +954,7 @@ Standard update functions are:\begin{itemize}
 
 Recall, that by definition the hash values in iteration $k$ encode the $k$-hop neighborhood of the vertex it has been assigned to.
 
-\begin{Theorem}[Isomorphy invariance of Weisfeiler and Lehman's vertex representation]{thm:WeisfeilerLehmanIsoInv}
+\begin{Theorem}[Isomorphy invariance of Weisfeiler and Lehman's vertex representation\cite{weisfeiler1968reduction}] {thm:WeisfeilerLehmanIsoInv}
 	Let $G, H$ be two graphs with vertex label functions $r_0^{\text{WL}, G}, r_0^{\text{WL}, H}$. If $G$ and $H$ are isomorphic (respecting $r_0^{\text{WL}, G}$, $r_0^{\text{WL}, H}$) then
 	\[ \forall k\ge 0:\qquad \mset{ r_k^{\text{WL}, G}(v)| \ v\in V(G)} =  \mset{ r_k^{\text{WL}, H}(v)| \ v\in V(H)} \]
 	This means the vertex representation can reduce the graph isomorphy to multiset equality.
@@ -874,7 +1003,7 @@ In its oldest form, a GNN layer is defined for all $v\in V(G)$ as
 where\begin{itemize}
 	\item $W_k^{\text{self}}, W_k^{\text{neigh}}\in \IR^{d_k\times d_{k+1}}$ are trainable parameter matrices, 
 	\item $\sigma:\IR^{d_k+1}\to\IR^{d_k+1}$ is an element-wise non-linear function\\ (e.g. $\tanh$, ReLU or sigmoid) and 
-	\item $b\in\IR^{d_{k+1}}$ denotes trainable bias parameters.
+	\item $b\in\IR^{d_{k+1}}$ denotes trainable bias parameters\cite{scarselli2008graph}.
 \end{itemize} 
 
 For now, lets assume that the weights and biases are chose appropriately and focus on the forward pass.
@@ -896,7 +1025,49 @@ Lets compute the next two representations for this example graph with a simple G
 	\includegraphics[width=0.7\linewidth]{images/exampleMessagePassingGNN}
 	\caption{}
 	\label{fig:examplemessagepassinggnn}
-\end{figure}
+\end{figure} %TODO: Node labelling
+
+
+
+\begin{minipage}{\textwidth}
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[x=2cm,y=2cm] 
+		\begin{scope}[scale=1]
+		
+		\tikzstyle{mycircle}=[circle,
+		draw=black,
+		fill=gray,
+		fill opacity = 0.3,
+		text opacity=1,
+		inner sep=0pt,
+		minimum size=7mm,
+		font=\small
+		]
+		
+		\coordinate (px1) at (0, 1);		
+		\coordinate (px2) at (1, 1);
+		\coordinate (px3) at (2, 1);
+		\coordinate (px4) at (1.5, 0);
+		
+		
+		\node[mycircle] (x1) at (px1) {$v_1$};	
+		\node[mycircle] (x2) at (px2) {$v_2$};
+		\node[mycircle] (x3) at (px3) {$v_3$};	
+		\node[mycircle] (x4) at (px4) {$v_4$};
+		
+		\draw[-] (x1) -- (x2);
+		\draw[-] (x2) -- (x3);
+		\draw[-] (x3) -- (x4);
+		\draw[-] (x2) -- (x4);
+		
+		
+		\end{scope}
+		\end{tikzpicture}
+	\end{figure}
+	\captionof{figure}{Example for the closeness centrality measure}
+	\label{fig:closenesscentrality3}
+\end{minipage}
 
 Initialize the GNN with 
 \begin{multicols}{2} \begin{itemize}
@@ -953,7 +1124,7 @@ Another variation is to use the \textit{symmetric normalization} aggregator:
 
 \subsection{Message passing on GCNs}
 
-A very popular variant of GNNs are \textbf{Graph Convolutional Neural Networks} (\textbf{GCNs}). These use symmetric normalization and do not distinguish between representations of a vertex $v$ and its neighbors $w\in N(v)$. Thus by construction, they are likely to lose information:
+A very popular variant of GNNs are \textbf{Graph Convolutional Neural Networks} (\textbf{GCNs})\cite{kipf2016semi}. These use symmetric normalization and do not distinguish between representations of a vertex $v$ and its neighbors $w\in N(v)$. Thus by construction, they are likely to lose information:
 \begin{equation}\label{eq:GCNUpdate}
 	r_{k+1} (v)= \text{ReLU}\Big( W_k\ \sum_{w\in N(G)\cup\{v\}} \frac{r_k(w)}{ \sqrt{|N(v)|\ |N(w)|}} +b_k  \Big)
 \end{equation}
@@ -964,7 +1135,7 @@ Note that symmetric normalization (partially) inhibits to learn from the degree 
 
 \subsection{Message passing on GINs}
 
-Another variant adds a multiple layer trainable Neural Network in each message passing step. These are called \textbf{Graph Isomorphism Networks} (\textbf{GINs}). Let $NN_{\theta_k}$ be a (multilayer) Neural Network (with trainable weights and element-wise non-linearities). Let $\epsilon_k\in \IR$ be a trainable weights. Then the update step of a GINs, using these parameters, can be described as:
+Another variant adds a multiple layer trainable Neural Network in each message passing step. These are called \textbf{Graph Isomorphism Networks} (\textbf{GINs})\cite{xu2018powerful}. Let $NN_{\theta_k}$ be a (multilayer) Neural Network (with trainable weights and element-wise non-linearities). Let $\epsilon_k\in \IR$ be a trainable weights. Then the update step of a GINs, using these parameters, can be described as:
 
 \begin{equation}\label{eq:GINUpdate}
 	r_{k+1}(v) = \operatorname{NN}_{\theta_k} \Big( (1+\epsilon_k) r_k(v) + \ \sum_{w\in N(v)} r_k(w)+ b_k \Big)
@@ -1181,6 +1352,8 @@ That means that there are always only finitely many entries that are nonzero for
 	Exercise. %TODO
 \end{Proof}
 
+We say the multiset graph representation is \textit{invariant under isomorphism}. They may or may not map non-isomorphic graphs to different values.
+
 \subsection{Histogram graph representations}
 
 Recall that we have earlier discussed \textit{histogram aggregators}. Let $\mathcal{X}$ be a set and $B_1,B_2,\dots, B_k\subseteq \mathcal{X}$ be bins. Then, for $X\in \IN^{\mathcal{X}}$ and $B_i$ we can define
@@ -1207,6 +1380,53 @@ Histograms can be seen as discrete distributions. During their definition one ca
 \end{Proof}
 
 Note that isomorphism respects the original labeling. Hence, graphs with different original label multisets can never be isomorphic. One may need to take extra care with respect to original labels in order to not have the representation denote an isomorphism where there is no one to be found.
+
+\begin{minipage}{\textwidth}
+	\begin{minipage}{0.5\textwidth}\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[x=2cm,y=2cm] 
+		\begin{scope}[scale=1]
+		
+		\tikzstyle{mycircle}=[circle,
+		draw=black,
+		fill=gray,
+		fill opacity = 0.3,
+		text opacity=1,
+		inner sep=0pt,
+		minimum size=7mm,
+		font=\small
+		]
+		
+		\coordinate (px1) at (0, 0);		
+		\coordinate (px2) at (0, 1);
+		\coordinate (px3) at (1, 0.5);
+		\coordinate (px4) at (2, 0.5);
+		
+		
+		\node[mycircle] (x1) at (px1) {$v_1$};	
+		\node[mycircle] (x2) at (px2) {$v_2$};
+		\node[mycircle] (x3) at (px3) {$v_3$};	
+		\node[mycircle] (x4) at (px4) {$v_4$};
+		
+		\draw[-] (x1) -- (x2);
+		\draw[-] (x2) -- (x3);
+		\draw[-] (x3) -- (x4);
+		\draw[-] (x3) -- (x1);
+		
+		
+		\end{scope}
+		\end{tikzpicture}
+	\end{figure}	
+	\end{minipage}
+	\begin{minipage}{0.5\textwidth}\begin{tabular}{l || c | c | c | c || r}
+		& $v_1$ & $v_2$ & $v_3$ & $v_4$ & $\sum$ \\ \hline
+		edge & $2$ & $3$ & $2$ & $1$ & $8$\\
+		$3$-path & $1$ & $2$ & $1$ & $2$ & $6$ \\
+		triangle & $1$ & $1$ & $1$ & $0$ & $3$ \\
+	\end{tabular}
+	\captionof{table}{Exapmle: Graphlet counting (of induced subgraphs).}
+	\end{minipage}
+\end{minipage}
 
 \section{GNNs for Transactional Graph Learning}
 
@@ -1242,35 +1462,190 @@ Conceptually, for the last step we add a \enquote{hypervertex} that is connected
 
 In the previous lectures (equation \ref{eq:GNNMessagePassing}), we have formulated the message passing framework on a per vertex basis. If we have to compute all vertex representations, anyway, we can reformulate the message passing NN using \textit{matrix vector operations} as follows:
 
-\begin{equation}{eq:GNNMessagePassingFastForward}
+\begin{equation}\label{eq:GNNMessagePassingFastForward}
 	R_{k+1} = \sigma\Big( R_k W_k^{\text{self}} + A_G R_k R_k W_k^{\text{neigh}} + b_k \Big)
 \end{equation}
 Again $W_k^{\text{self}}, W_k^{\text{neigh}}\in\IR^{d_k \times d_{k+1}}$ and $b\in\IR^{d_{k+1}}$ are trainable weights (matrices). $A_G$ is a (sparse) adjacency matrix of $G$ and $R_k \in \IR^{|V(G)|\times d_k}$ is a row matrix of vertex representations.
 
-
-
-\chapter{END >>>> FURTHER ANNOUNCED TOPICS}
-\section{Link prediction}
-\section{Graph classification, regression and clustering in transactional graph databases}
-\chapter{Feature Extraction and Graph Mining}
-In this chapter we focus on extracting graph representations following a fixed process. Therefore we discuss several pattern (or feature) classes and focus on the following questions:
-\begin{itemize}
-	\item What kind of features are there (e.g. local and global)?
-	\item How viable are these features?
-	\item How expressive is their extraction?
-	\item How powerful are graph representations in terms of distinguishing inputs?
-	\item How do we evaluate their quality?
-\end{itemize}
-\chapter{Learning on Graphs and Graph Kernels}
-In this chapter we discuss learning with (implicit) graph representations. Therefore we introduce machine learning models specific to the task of classifying graphs.
-\section{Support Vector Machine (SVM)}
-\section{Expressive power of machine learning models}
-\section{Kernel of special interest: Weisfeiler-Lehman kernel}
-\section{Relationship to Weisfeiler-Lehman method}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% Lecture 06 - dd.mm.2021 %%%%
+%%%%% Lecture 06 - 29.11.2021 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Complete representations}
+
+Note that with theorem \ref{thm:MSGraphRepIso} we showed that the multiset graph representation is invariant under isomorphism, but may or may not map non-isomorphic graphs to different values. We now consider functions that map given graphs to different values \textit{if and only if} they are not isomorphic: 
+
+\begin{Definition}[Complete representation of graph classes] {def:CompleteRepresentationFunction}
+	Let $\mathcal{G}$ be a graph class and $\mathcal{Y}$ be some (feature) space. We call $c:\mathcal{G}\to\mathcal{Y}$ a \textbf{complete representation function of} $\mathcal{G}$ if
+	\[ \forall G,H\in\mathcal{G}:\qquad c(G) = c(H) \ \iff\ G \text{ is isomorphic to } H \]
+	and $c(G)=c(H)$ can be verified in \textit{polynomial time} in $\operatorname{size}\big( c(G) \big)$ and $\operatorname{size}\big( c(H) \big)$.
+	
+	Sometimes such functions are called \textbf{canonical functions} and their images are called \textbf{canonical strings} or \textbf{canonical labelings}.
+\end{Definition}
+
+Notice, that this property is a prerequisite to compute a (non-negative) distance between graphs. That is, if we cannot learn such functions, we will always have some objects that we cannot distinguish (by their image), although it might be necessary. 
+
+Furthermore, isomorphism defines an equivalence relation on any graph class $\mathcal{G}$. We can consider the quotient space $\mathcal{G}_{\text{iso}}$ that contains exactly one representative graph $G_X$ for each subset $X\subseteq \mathcal{G}$ of pairwise isomorphic graphs in $\mathcal{G}$.
+
+Let $f:\mathcal{G}\to\mathcal{Y}$ be invariant under isomorphism. Then this function induces a function $f_{\text{iso}}:\mathcal{G}_{\text{iso}}\to\mathcal{Y}$ with
+\[ \forall X\subseteq \mathcal{G}:\qquad  f_{\text{iso}}(G_X)= f(G_X) \]
+
+If $f$ is a complete representation on $\mathcal{G}$, then the induced $f_{\text{iso}}$ is \textit{injective} on $\mathcal{G}_{\text{iso}}$ (twp images are equal if and only if the inputs are equal).
+
+\begin{Definition}[Expressiveness of functions] {def:ExpressivenessOfFunctions}
+	Let $f,f^\prime:\mathcal{G}\to\mathcal{Y}$ be two functions that are invariant under isomorphism. $f^\prime$ is \textbf{less expressive} than $f$, denoted $f^\prime \le_{x} f$, if
+	\[ f(G) = f(H) \ \implies \ f^\prime(G) = f^\prime(H) \]
+	
+	$f$ and $f^\prime$ are \textbf{equally expressive} if $f\le_{x} f^\prime$ and $f^\prime\le_{x} f$.
+	
+	$f^\prime$ is \textbf{strictly less expressive} than $f$ (written as $f^\prime <_{x} f$), if $f^\prime\le_{x} f$ and not $f\le_{x} f^\prime$.
+\end{Definition}
+
+\paragraph{Example of a complete representation} Let $\mathcal{G}$ be the class of all unlabeled graphs (i.e. $f_G, f_V, f_E$ are all constant). Let $<_{\text{Adj}}$ be a total order on the adjacency matrices. We assign any graph $G$ its \textit{smallest adjacency matrix among all permutations} of $V(G)$. Then two isomorphic graphs $G$, $H$ will be mapped to identical adjacency matrices.
+
+More specifically, we can realize the total order on the adjacency matrices $<_{\text{Adj}}$ by \textit{lexicographical ordering} the flattened string representation of any adjacency matrix $G$.
+
+While this function indeed is a complete representation, it cannot be computed efficiently (as far as we know). In fact, the naive algorithm for the representation on the previous slides iterates over all
+permutations of the adjacency matrix and hence takes factorial time.
+
+\begin{Theorem}[Complexity of complete representations] {thm:ComplexityOfCompleteRepresentations}
+	Computing a complete representation for some graph class $\mathcal{G}$ is Isomorphism-hard.
+	
+	I.e. if we cannot decide if two graphs in $\mathcal{G}$ are isomorphic in polynomial time, then we cannot compute \textit{any} complete representation function for $\mathcal{G}$ in polynomial time.
+\end{Theorem}
+\begin{Proof}
+	Suppose we can compute a complete representation $c:\mathcal{G} \to\mathcal{Y}$ for some suitable $\mathcal{Y}$ in polynomial time in $\operatorname{size}(G)$ for all $G\in\mathcal{G}$. Then we can, for two graphs $G,H\in\mathcal{G}$, compute $c(G)$ and $c(H)$ in polynomial time and evaluate $c(G)=c(H)$ in polynomial time.
+	
+	Hence, we have just found a polynomial time algorithm for checking isomorphism for graphs in $\mathcal{G}$.
+\end{Proof}
+
+We do not know the complexity of the isomorphism problem for the class of all graphs. Isomorphism \cite{babai2016graph} and recently computing a complete representation for the class of all graphs\cite{babai2019canonical} was shown to be solvable in \textbf{quasipolynomial time}.
+
+Some more restricted graph classes have polynomial time complete representation functions. Various variants exists for trees\cite{chi2005frequent}, which allows to compute complete representations for forests, too. Also various graph classes allow for polynomial time algorithms, which in turn make it possible that a complete representation exists.
+
+
+Note that this does not imply, that one cannot \textit{learn} a complete representation for the class of all graphs. Supervised learning from a fixed finite training dataset can be seen as \textit{constant time pre-processing}, i.e. it takes $\mathcal{O}(1)$ time. Thus, if we could learn a complete representation $c$ that is computable in polynomial time for any graph $G\in\mathcal{G}$, then this would imply a polynomial time algorithm for the isomorphism problem on $\mathcal{G}$.
+
+GNNs promise to learn a suitable graph representation for any learning task. Thus lets explore if we can use them to learn complete representations for the class of all graphs.
+
+Again, the Weisfeiler-Lehman vertex representations come to mind (definition \ref{def:WeisfeilerLehmanLabelPropagationScheme}). But we have the following result:
+
+\begin{Theorem}[Incompleteness of Weisfeiler-Lehman representations] {thm:IncompletenessOfWL}
+	Weisfeiler-Lehman representations are strictly less expressive on the class of all graphs than compete representations, i.e.
+	\[ R_k^{\text{WL}} <_{x} c \]
+	for any $k\in \IN$ and any complete representation $c$.
+\end{Theorem}
+\begin{Proof}
+	There are a few counterexamples. These are non-isomorphic graphs with identical Weisfeiler-Lehman representations\cite{cai1992optimal}: %TODO: diesplay some of these graphs
+\end{Proof}
+
+\section{Expressive power of GNNs}
+
+Before we present results about the expressiveness of GNNs, lets introduce a definition and a small theorem which we will use in the upcoming proofs:
+
+\begin{Definition}[Strength of functions] {def:StrengthOrderOnFunctions}
+	Let $f$ and $f^\prime$ be functions on some domain $\mathcal{X}$. We say $f^\prime$ is \textbf{less strong} than $f$ and write $f^\prime \tilde{\le} f$ if
+	\[ \forall x,y\in \mathcal{X}:\qquad f(x) = f(y) \ \implies \ f^\prime(x) = f^\prime(y) \]
+\end{Definition}
+
+Note if $f$ and $f^\prime$ are functions on a graph class $\mathcal{G}$ such that $f$ and $f^\prime$ are invariant under isomorphism and $f^\prime \tilde{\le} f$, then $f^\prime$ is also less expressive than $f$, i.e. $f^\prime \le_{x} f$.
+
+\begin{Theorem}[Obedience of weaker functions] {thm:ObedienceOfWeakerFunctions}
+	Let $f^\prime$ and $f$ be two functions on some domain $\mathcal{X}$ and $f^\prime \tilde{\le} f$. Let $X,Y\subseteq \IN^{\mathcal{X}}$ be two multisets. Then
+	\[ \Mset{f(x)|\ x\in X} = \Mset{f(x)|\ x\in Y} \ \implies \ \Mset{f^\prime(x)|\ x\in X} = \Mset{f^\prime(x)|\ x\in Y} \]
+\end{Theorem}
+\begin{Proof}
+	The equality of two multisets $X^\prime, Y^\prime \subseteq \IN^{\mathcal{X}}$ means (by definition) that there exists a bijective function $b:X^\prime \to Y^\prime$ with $Y^\prime \ni b(x) = x\in X^\prime$.
+	
+	Thus the equality of multisets $\Mset{f(x)|\ x\in X} = \Mset{f(x)|\ x\in Y}$ implies that there is such a bijective function $b$ such that 
+	\[ \forall x\in X:\qquad f(x) = b\big( f(x) \big) \]
+	But we also have that $b\big( f(x) \big) = f(y)$ for some $y\in Y$ and hence $f(x)= f(y)$. So we also have a bijection $b^\prime:X\to Y$ such that $f(x) = f\big( b^\prime(x) \big)$.
+	
+	Now, by assumption $f(x) = f(y)$ implies $f^\prime(x) = f^\prime(y)$ and hence we have $f^\prime(x) = f^\prime\Big( b^\prime(x) \Big)$ for all $x\in X$ and hence also for all $f^\prime(x) \in \Mset{f^\prime(x)| x\in X}$.
+\end{Proof}
+
+\begin{Theorem}[GNNs are at most as expressive as Weisfeiler-Lehman representations\cite{xu2018powerful}] {thm:GNNAtMostExprAsWLRep}
+	Let $\mathcal{G}$ be the class of all graphs and let $R_k:\mathcal{G}\to\IR^d$ be a representation of $\mathcal{G}$ computed by a message passing Graph Neural Network $r_k$ with $k$ iterations and some final graph aggregation step $\operatorname{agg}^\prime\Big( \mset{r_k(v)| \ v\in V(G)} \Big)$. Then
+	\[ R_k \le_{x} R_k^{\text{WL}} \]
+\end{Theorem}
+\begin{Proof}
+	The proof by induction has the following structure: We will show that for $R_k$ defined by $R_k(G)=\operatorname{agg}^\prime \big( \mset{r_k(v)|\ v\in V(G)} \big)$ with 
+	\[ r_k(v) = \operatorname{upd}_k\Big( r_{k-1}(v), \ \operatorname{agg}_k\big( \mset{r_{k-1}| \ w\in N(v)} \big) \Big)\]
+	for any choice of $\operatorname{agg}^\prime$, $\operatorname{agg}_k$ and $\operatorname{upd}_k$ it holds that
+	\[ R_{k-1} \le_{x} R_{k-1}^{\text{WL}} \ \implies \ R_k\le_{x} R_k^{\text{WL}} \]
+	That means if $R_{k-1}$ is less expressive than $R_{k-1}^{\text{WL}}$, then $R_k$ is less expressive than $R_k^{\text{WL}}$.
+	
+	We show this by showing that for 
+	\[ r_k^{\text{WL}} = \# \Big( r_{k-1}^{\text{WL}}, \ \operatorname{id}\big( \mset{r_{k-1}(w)|\ w\in N(v)} \big) \Big) \]
+	for any choice of $\operatorname{agg}_k$ and $\operatorname{upd}_k$ it holds that if
+	\[ r_{k-1}^{\text{WL}}(v) = r_{k-1}^{\text{WL}}(u) \ \implies \ r_{k-1}(v) = r_{k-1}(u)\]
+	then it is 
+	\[ r_k^{\text{WL}}(v) = r_k^{\text{WL}}(u) \ \implies \ r_k(v) = r_k(u) \]
+	
+	
+	\paragraph{Induction start}: Note that we are now talking about vertex representations and not about general $R$ functions defined over graphs. It is $r_0 = r_0^{\text{WL}} = f_V$ and hence
+	\[ r_0^{\text{WL}}(v) = r_0^{\text{WL}}(u) \ \implies \ r_0(v) = r_0(u) \qquad\text{i.e., }r_0 \tilde{\le}r_0^{\text{WL}} \]
+	\paragraph{Induction step}: Let $r_{k-1} \tilde{\le}r_{k-1}^{\text{WL}}$. We will now look at the definition of $r_k^{\text{WL}}(v)$ and see how it is connected to $r_k(v)$. We will show that then $r_k(v) \tilde{\le} r_k^{\text{WL}}$, i.e.,
+	\[ \forall u,v\in\bigcup_{G \in\mathcal{G}} V(G):\qquad r_k^{\text{WL}}(v) = r_k^{\text{WL}}(u) \ \implies \ r_k(v) = r_k(u) \]
+	By definition $r_k^{\text{WL}}(v) = r_k^{\text{WL}}(u)$ is equivalent to
+	\[\#\Big( r_{k-1}^{\text{WL}}(v), \ \operatorname{id}\Mset{ r_{k-1}^{\text{WL}}(w) |\ w\in N(v) } \Big) = \#\Big( r_{k-1}^{\text{WL}}(u), \ \operatorname{id}\Mset{ r_{k-1}^{\text{WL}}(w) |\ w\in N(u) } \Big)
+	\]
+	Since $\#$ is injective, this implies
+	\begin{itemize}
+		\item $r_{k-1}^{\text{WL}}(v) = r_{k-1}^{\text{WL}}(u)$ and
+		\item $\Mset{ r_{k-1}^{\text{WL}}(w) |\ w\in N(v) } = \Mset{ r_{k-1}^{\text{WL}}(w) |\ w\in N(u) }$
+	\end{itemize}
+	By induction assumption we know that 
+	\[ r_{k-1}^{\text{WL}}(v) = r_{k-1}^{\text{WL}}(u) \ \implies \ r_{k-1}(v) = r_{k-1}(u) \]
+	Using theorem \ref{thm:ObedienceOfWeakerFunctions} on $r_{k-1}\tilde{\le} r_{k-1}^{\text{WL}}$ with the equality of the multisets in mind (second implication) gives 
+	\[ \forall u,v\in\bigcup_{G \in\mathcal{G}} V(G):\qquad  \Mset{ r_{k-1}(w)| \ w\in N(v) } = \Mset{ r_{k-1}(w)| \ w\in N(u) } \]
+	We now have shown that
+	\[ r_k(v) = \operatorname{upd}_k\Big( r_{k-1}(v), \ \operatorname{agg}_k\big( \mset{r_{k-1}| \ w\in N(v)} \big) \Big) = \operatorname{upd}_k\Big( r_{k-1}(v), \ \operatorname{agg}_k\big( \mset{r_{k-1}| \ w\in N(v)} \big) \Big) = r_k(u) \]
+	since the function arguments are identical. Thus we have now proven the intermediate claim that $r_k\tilde{r_k}^{\text{WL}}$ for any $k$.
+	
+	Using theorem \ref{thm:ObedienceOfWeakerFunctions} again, on
+	\begin{align*}
+		&& \Mset{ r_k^{\text{WL}}(v) | \ v\in V(G)} &= \Mset{ r_k^{\text{WL}}(u) | \ u\in V(H)} \\
+		&\implies & \Mset{ r_k^{\text{WL}}(v) | \ v\in V(G)} &= \Mset{ r_k^{\text{WL}}(u) | \ u\in V(G)}
+	\end{align*}
+	As the graph level aggregator is a function, this implies
+	\[ \operatorname{agg}^\prime \Big( \Mset{ r_k^{\text{WL}}(v) | \ v\in V(G)} \Big) = \operatorname{agg}^\prime \Big( \Mset{ r_k^{\text{WL}}(v) | \ v\in V(G)} \Big)\]
+	Which is by definition $R_k\le_{x} R_k^{\text{WL}}$.
+\end{Proof}
+
+
+\begin{Theorem}[Weisfeiler-Lehman representations are at most as expressive as GNNs] {thm:WLRepAtMostExprAsGNN}
+	Let $\mathcal{G}$ be the class of all graphs and let $R_k:\mathcal{G}\to\IR^d$ be a representation of $\mathcal{G}$ computed by a message passing GNN $r_k$ with $k$ iterations and some final graph aggregation step $\operatorname{agg}^\prime\Big( \mset{r_k(v)| \ v\in V(G)} \Big)$. Then
+	\[ R_k^{\text{WL}} \le_{x} R_k \]
+	if the following conditions hold:\begin{enumerate}
+		\item $r_k$ aggregates and updates vertex features with \textit{injective} functions $\operatorname{agg}$ and $\operatorname{upd}$ in
+		\[ r_{k+1}(v) = \operatorname{upd}_k\Big( r_k(v), \operatorname{agg}_k\big( r_k(w)|\ w\in N(v) \big) \Big) \]
+		\item $R_k$'s graph-level aggregation step, which operates on $\mset{r_k(v)| \ v\in V(G)}$ is \textit{injective}.
+	\end{enumerate}
+\end{Theorem}
+\begin{Proof}
+	We have shown that any choice of $\operatorname{agg}_k$ and $\operatorname{upd}_k$ yields a message passing algorithm that is at most as expressive as the message passing algorithm that uses $\#$ and $\operatorname{id}$. However, we have only used that $\#$ and $\operatorname{id}$ are injective functions. Hence the claim follows directly from the proof of theorem \ref{thm:GNNAtMostExprAsWLRep} by setting
+	\[\operatorname{agg}_k = \operatorname{id} \qquad\text{and}\qquad \operatorname{upd}_k = \#\text{.} \]
+\end{Proof}
+
+Theorem \ref{thm:GNNAtMostExprAsWLRep} and \ref{thm:WLRepAtMostExprAsGNN} combined imply, that any message passing GNN can be at most as expressive as the Weisfeiler Lehman relabeling function. Note however, that there may exist GNNs that are equally expressive. We will see, that GINs get quite close.
+
+\subsection{The GIN theorem}
+
+\begin{Theorem}[The GIN theorem] {thm:TheGinTheorem}
+	Assume that $r_0:\mathcal{G}\to\mathcal{X}$ maps to a countable space $\mathcal{X}$. There exists a function $f:\mathcal{X}\to\IR^d$ such that for infinitely many choices of $\epsilon$ it is
+	\[ \operatorname{upd}(c,X) = (1+\epsilon) f(c) + \sum_{x\in X}f(x) \]
+	is unique for each air $x\in\mathcal{X}$, $X\in\IN^{\mathcal{X}}$.
+\end{Theorem}
+
+The requirement for countable domains makes this suitable for discretely labeled initial vertex representations $r_0$. We can use one-hot encoded representations of the initial labels. Summing such vectors results in an injective function over multisets.
+
+We can use a NN to learn the function $f:\mathcal{X}\to\IR^d$. Since multilayer perceprtons (with non-linearities) are universal function approximators\cite{hornik1989multilayer} we can (theoretically) learn $f$ by replacing our update function $\operatorname{upd}_k$ with a sufficiently powerful multilayer perceptron $\operatorname{MLP}_{\theta}$:
+\[ r_{k+1}(v) = f\big( r_k(v) \big) = \operatorname{MLP}_{\theta} \Big( (1+\epsilon) r_k(v) + \sum_{w\in N(v)} r_k(w) \Big) \]
+
+Note that this is exactly the definition of a GIN\cite{xu2018powerful} (equation \ref{eq:GINUpdate}).
+
+\chapter{GOTO END}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Lecture 07 - dd.mm.2021 %%%%
@@ -1309,15 +1684,10 @@ In this chapter we discuss learning with (implicit) graph representations. There
 
 \input{GRL_Exercises.tex}
 
-\newpage
 %%%% ----------------------- %%%%
 %%%% ------Bibliography----- %%%%
 %%%% ----------------------- %%%%
-\begin{thebibliography}{4}
-
-\bibitem[1]{1}
-\glqq EXAMPLE: Finite Elemente - Theorie, schnelle Löser und Anwendungen in der Elastizitätstheorie \grqq von Dietrich Braess, 5. Auflage, Springer, 2013
-
-\end{thebibliography}
+\newpage
+\printbibliography
 
 \end{document}
